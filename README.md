@@ -83,4 +83,5 @@ The server provides various tools for interacting with Gitee:
 | **list_repo_issues**        | Issue | List repository issues |
 | **comment_issue**           | Issue | Comment on an issue |
 | **list_issue_comments**     | Issue | List comments on an issue |
+| **get_user_info**           | User | Get current authenticated user information |
 | **list_user_notifications** | Notification | List user notifications |

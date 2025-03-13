@@ -3,19 +3,22 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
+	"os"
+
 	"gitee.com/oschina/mcp-gitee/operations/issues"
 	"gitee.com/oschina/mcp-gitee/operations/notifications"
 	"gitee.com/oschina/mcp-gitee/operations/pulls"
 	"gitee.com/oschina/mcp-gitee/operations/repository"
+	"gitee.com/oschina/mcp-gitee/operations/users"
 	"gitee.com/oschina/mcp-gitee/utils"
+
 	"github.com/mark3labs/mcp-go/server"
-	"log"
-	"os"
 )
 
 var (
 	// Version gitee mcp server version
-	Version = "0.1.0"
+	Version = "0.1.1"
 )
 
 func newMCPServer() *server.MCPServer {
@@ -56,6 +59,9 @@ func addTools(s *server.MCPServer) {
 
 	// Notifications Tools
 	s.AddTool(notifications.ListUserNotificationsTool, notifications.ListUserNotificationsHandler)
+
+	// Users Tools
+	s.AddTool(users.GetUserInfoTool, users.GetUserInfoHandleFunc())
 }
 
 func run(transport, addr string) error {

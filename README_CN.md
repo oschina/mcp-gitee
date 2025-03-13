@@ -83,4 +83,5 @@ Gitee MCP 服务器是一个用于 Gitee 的模型上下文协议（Model Contex
 | **list_repo_issues**        | Issue | 列出仓库 Issue       |
 | **comment_issue**           | Issue | 评论 Issue         |
 | **list_issue_comments**     | Issue | 列出 Issue 的评论     |
+| **get_user_info**           | 用户 | 获取当前认证用户信息 |
 | **list_user_notifications** | 通知 | 列出用户通知           |
