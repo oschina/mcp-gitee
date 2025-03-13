@@ -42,6 +42,23 @@ Gitee MCP 服务器是一个用于 Gitee 的模型上下文协议（Model Contex
 ./mcp-gitee -token=你的_GITEE_访问令牌
 ```
 
+### MCP Hosts 配置
+
+例如，以 Windsurf 为例，Claude Desktop、Cline、RooCode 和 Cursor 都是类似的。
+```
+{
+  "mcpServers": {
+    "gitee": {
+      "command": "mcp-gitee",
+      "env": {
+        "GITEE_API_BASE": "https://gitee.com/api/v5",
+        "GITEE_ACCESS_TOKEN": "<your personal token>"
+      }
+    }
+  }
+}
+```
+
 ### 命令行选项
 
 - `-token`：Gitee 访问令牌

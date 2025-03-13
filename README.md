@@ -42,6 +42,22 @@ Run the server with:
 ./mcp-gitee -token=YOUR_GITEE_ACCESS_TOKEN
 ```
 
+### MCP Hosts Configuration
+For example, taking Windsurf as an example, Claude Desktop, Cline, Roocode, and Cursor are analogous.
+```
+{
+  "mcpServers": {
+    "gitee": {
+      "command": "mcp-gitee",
+      "env": {
+        "GITEE_API_BASE": "https://gitee.com/api/v5",
+        "GITEE_ACCESS_TOKEN": "<your personal token>"
+      }
+    }
+  }
+}
+```
+
 ### Command-line Options
 
 - `-token`: Gitee access token
