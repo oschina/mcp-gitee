@@ -89,3 +89,14 @@ The server provides various tools for interacting with Gitee:
 | **list_issue_comments**     | Issue | List comments on an issue |
 | **get_user_info**           | User | Get current authenticated user information |
 | **list_user_notifications** | Notification | List user notifications |
+
+## Contribution
+
+We welcome contributions from the open-source community! If you'd like to contribute to this project, please follow these guidelines:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Make your changes and ensure the code is well-documented.
+4. Submit a pull request with a clear description of your changes.
+
+For more information, please refer to the [CONTRIBUTING](CONTRIBUTING.md) file.
