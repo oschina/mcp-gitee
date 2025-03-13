@@ -57,6 +57,10 @@ Gitee MCP 服务器是一个用于 Gitee 的模型上下文协议（Model Contex
 - `GITEE_ACCESS_TOKEN`：Gitee 访问令牌
 - `GITEE_API_BASE`：Gitee API 基础 URL
 
+## 许可证
+
+本项目采用 MIT 许可证。有关更多详细信息，请参阅 [LICENSE](LICENSE) 文件。
+
 ## 可用工具
 
 服务器提供了各种与 Gitee 交互的工具：

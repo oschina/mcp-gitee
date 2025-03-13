@@ -57,6 +57,10 @@ You can also configure the server using environment variables:
 - `GITEE_ACCESS_TOKEN`: Gitee access token
 - `GITEE_API_BASE`: Gitee API base URL
 
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
 ## Available Tools
 
 The server provides various tools for interacting with Gitee:
