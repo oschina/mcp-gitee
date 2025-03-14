@@ -36,22 +36,22 @@ Gitee MCP Server is a Model Context Protocol (MCP) server implementation for Git
 
 ## Usage
 
-Run the server with:
+Check mcp-gitee version:
 
 ```bash
-./mcp-gitee -token=YOUR_GITEE_ACCESS_TOKEN
+mcp-gitee --version
 ```
 
 ### MCP Hosts Configuration
 For example, taking Windsurf as an example, Claude Desktop, Cline, Roocode, and Cursor are analogous.
-```
+```json
 {
   "mcpServers": {
     "gitee": {
       "command": "mcp-gitee",
       "env": {
         "GITEE_API_BASE": "https://gitee.com/api/v5",
-        "GITEE_ACCESS_TOKEN": "<your personal token>"
+        "GITEE_ACCESS_TOKEN": "<your personal access token>"
       }
     }
   }
