@@ -9,6 +9,17 @@ Gitee MCP Server is a Model Context Protocol (MCP) server implementation for Git
 - Command-line flags for easy configuration
 - Supports both personal, organization, and enterprise operations
 
+<details>
+<summary><b>Practical scenario: Obtain Issue from the warehouse, implement and create a Pull Request</b></summary>
+
+1. Get repository Issues
+![get_repo_issues](./docs/images/get_repo_issues.jpg)
+2. Implement coding & create Pull Request based on Issue details
+![implement_issue](./docs/images/implement_issue.jpg)
+3. Comment & Close Issue
+![comment_and_close_issue](./docs/images/comment_and_close_issue.jpg)
+</details>
+
 ## Installation
 
 ### Prerequisites
@@ -47,8 +58,15 @@ mcp-gitee --version
 For example, taking Windsurf and Cursor as an example, Claude Desktop, Cline, Roocode are analogous.
 
 **Cursor**:
+
+stdio mode
 ```bash
 mcp-gitee -token <Your Personal Access Token>
+```
+
+sse mode
+```bash
+mcp-gitee -transport sse -token <Your Personal Access Token>
 ```
 
 **Windsurf**:

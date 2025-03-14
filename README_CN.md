@@ -9,6 +9,17 @@ Gitee MCP 服务器是一个用于 Gitee 的模型上下文协议（Model Contex
 - 命令行标志，便于配置
 - 支持个人、组织和企业操作
 
+<details>
+<summary><b>实战场景：从仓库获取 Issue，实现并创建 Pull Request</b></summary>
+
+1. 获取当前仓库 Issues
+![get_repo_issues](./docs/images/get_repo_issues.jpg)
+2. 根据 Issue 详情实现编码 & 创建 Pull Request
+![implement_issue](./docs/images/implement_issue.jpg)
+3. 评论&关闭Issue
+![comment_and_close_issue](./docs/images/comment_and_close_issue.jpg)
+</details>
+
 ## 安装
 
 ### 前提条件
@@ -48,8 +59,15 @@ mcp-gitee --version
 例如，以 Windsurf、Cursor 为例，Claude Desktop、Cline、RooCode 都是类似的。
 
 **Cursor**:
+
+stdio mode
 ```bash
 mcp-gitee -token <Your Personal Access Token>
+```
+
+sse mode
+```bash
+mcp-gitee -transport sse -token <Your Personal Access Token>
 ```
 
 **Windsurf**:
