@@ -44,7 +44,14 @@ mcp-gitee --version
 ```
 
 ### MCP Hosts Configuration
-For example, taking Windsurf as an example, Claude Desktop, Cline, Roocode, and Cursor are analogous.
+For example, taking Windsurf and Cursor as an example, Claude Desktop, Cline, Roocode are analogous.
+
+**Cursor**:
+```bash
+mcp-gitee -token <Your Personal Access Token>
+```
+
+**Windsurf**:
 ```json
 {
   "mcpServers": {

@@ -45,7 +45,14 @@ mcp-gitee --version
 
 ### MCP Hosts 配置
 
-例如，以 Windsurf 为例，Claude Desktop、Cline、RooCode 和 Cursor 都是类似的。
+例如，以 Windsurf、Cursor 为例，Claude Desktop、Cline、RooCode 都是类似的。
+
+**Cursor**:
+```bash
+mcp-gitee -token <Your Personal Access Token>
+```
+
+**Windsurf**:
 ```json
 {
   "mcpServers": {
