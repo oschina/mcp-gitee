@@ -3,7 +3,6 @@ package repository
 import (
 	"context"
 	"fmt"
-	"gitee.com/oschina/mcp-gitee/operations/types"
 	"gitee.com/oschina/mcp-gitee/utils"
 	"github.com/mark3labs/mcp-go/mcp"
 	"net/url"
@@ -48,6 +47,6 @@ func GetFileContentHandler(ctx context.Context, request mcp.CallToolRequest) (*m
 	}
 	apiUrl := fmt.Sprintf("/repos/%s/%s/contents/%s", owner, repo, url.QueryEscape(path))
 	giteeClient := utils.NewGiteeClient("GET", apiUrl, utils.WithQuery(map[string]interface{}{"ref": ref}))
-	fileContent := &types.FileContent{}
-	return giteeClient.HandleMCPResult(fileContent)
+	var fileContents interface{}
+	return giteeClient.HandleMCPResult(&fileContents)
 }

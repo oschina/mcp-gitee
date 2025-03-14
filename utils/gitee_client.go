@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"gitee.com/oschina/mcp-gitee/operations/types"
 	"io/ioutil"
@@ -223,19 +224,30 @@ func (g *GiteeClient) HandleMCPResult(object any) (*mcp.CallToolResult, error) {
 	}
 
 	if err = json.Unmarshal(body, object); err != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("Failed to parse response: %s", err.Error())),
-			NewInternalError(err)
+		errorMessage := fmt.Sprintf("Failed to parse response: %v", err)
+		return mcp.NewToolResultError(errorMessage), NewInternalError(errors.New(errorMessage))
 	}
 
 	// decode file base64 content
-	if fileContent, ok := object.(*types.FileContent); ok {
-		content, err := base64.StdEncoding.DecodeString(fileContent.Content)
+	switch v := object.(type) {
+	case *[]types.FileContent:
+		for i := range *v {
+			content, err := base64.StdEncoding.DecodeString((*v)[i].Content)
+			if err != nil {
+				return mcp.NewToolResultError(fmt.Sprintf("Failed to decode base64 content: %s", err.Error())),
+					NewInternalError(err)
+			}
+			(*v)[i].Content = string(content)
+		}
+		object = v
+	case *types.FileContent:
+		content, err := base64.StdEncoding.DecodeString(v.Content)
 		if err != nil {
 			return mcp.NewToolResultError(fmt.Sprintf("Failed to decode base64 content: %s", err.Error())),
 				NewInternalError(err)
 		}
-		fileContent.Content = string(content)
-		object = fileContent
+		v.Content = string(content)
+		object = v
 	}
 
 	result, err := json.MarshalIndent(object, "", "  ")

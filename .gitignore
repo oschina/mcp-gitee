@@ -19,6 +19,7 @@ profile.cov
 *.iml
 
 .vscode/
+release/
 
 .DS_Store
 *.log
