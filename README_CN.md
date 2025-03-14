@@ -56,7 +56,12 @@ mcp-gitee --version
 
 ### MCP Hosts 配置
 
-例如，以 Windsurf、Cursor 为例，Claude Desktop、Cline、RooCode 都是类似的。
+<div style="display: flex; justify-content: center; gap: 15px;">
+  <a href="docs/install/claude.md"><img src="docs/install/logos/Claude.jpg" style="border-radius: 0px" width=80 height=80 alt="Smart Clipboard Logo" width="200" href="docs/"></a>
+  <a href="docs/install/cursor.md"><img src="docs/install/logos/Cursor.jpg" width=80 height=80 alt="Smart Clipboard Logo" width="200" href="docs/"></a>
+  <a href="docs/install/cline.md"><img src="docs/install/logos/Cline.png" width=80 height=80 alt="Smart Clipboard Logo" width="200" href="docs/"></a>
+  <a href="docs/install/windsurf.md"><img src="docs/install/logos/Windsurf.jpg" width=80 height=80 alt="Smart Clipboard Logo" width="200" href="docs/"></a>
+</div>
 
 **Cursor**:
 
