@@ -10,7 +10,7 @@ Gitee MCP Server is a Model Context Protocol (MCP) server implementation for Git
 - Supports both personal, organization, and enterprise operations
 
 <details>
-<summary><b>Practical scenario: Obtain Issue from the warehouse, implement and create a Pull Request</b></summary>
+<summary><b>Practical scenario: Obtain Issue from the repository, implement and create a Pull Request</b></summary>
 
 1. Get repository Issues
 ![get_repo_issues](./docs/images/get_repo_issues.jpg)

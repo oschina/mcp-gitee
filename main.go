@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"log"
@@ -70,12 +71,18 @@ func run(transport, addr string) error {
 	switch transport {
 	case "stdio":
 		if err := server.ServeStdio(s); err != nil {
+			if err == context.Canceled {
+				return nil
+			}
 			return err
 		}
 	case "sse":
 		srv := server.NewSSEServer(s, "http://"+addr)
 		log.Printf("SSE server listening on %s", addr)
 		if err := srv.Start(addr); err != nil {
+			if err == context.Canceled {
+				return nil
+			}
 			return fmt.Errorf("server error: %v", err)
 		}
 	default:
