@@ -17,8 +17,7 @@ import (
 )
 
 var (
-	// Version gitee mcp server version
-	Version = "0.1.1"
+	Version = utils.Version
 )
 
 func newMCPServer() *server.MCPServer {

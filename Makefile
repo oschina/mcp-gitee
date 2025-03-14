@@ -2,7 +2,7 @@
 GO = go
 
 # Version information
-VERSION ?= 0.1.1
+VERSION ?= 0.1.2
 
 # Repository information
 GITEE_OWNER ?= "oschina"

@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"runtime"
 	"strconv"
 
 	"github.com/mark3labs/mcp-go/mcp"
@@ -137,6 +138,7 @@ func (g *GiteeClient) Do() (*GiteeClient, error) {
 	}
 
 	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("User-Agent", "mcp-gitee " + Version + " Go/" + runtime.GOOS + "/" + runtime.GOARCH + "/" + runtime.Version())
 
 	accessToken := GetGiteeAccessToken()
 	if accessToken == "" {
