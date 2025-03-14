@@ -31,7 +31,7 @@ Gitee MCP 服务器是一个用于 Gitee 的模型上下文协议（Model Contex
    
 3. 使用 go install 安装
    ```bash
-   go install gitee.com/oschina/mcp-gitee
+   go install gitee.com/oschina/mcp-gitee@latest
    ```
 
 ## 使用方法
