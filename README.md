@@ -28,8 +28,9 @@ Gitee MCP Server is a Model Context Protocol (MCP) server implementation for Git
    ```bash
    make build
    ```
+   Move ./bin/mcp-gitee PATH env
 
-3. Use go install
+### Use go install
    ```bash
    go install gitee.com/oschina/mcp-gitee@latest
    ```
