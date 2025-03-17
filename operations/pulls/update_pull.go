@@ -41,7 +41,15 @@ var UpdatePullTool = func() mcp.Tool {
 func UpdatePullHandleFunc(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 	owner := request.Params.Arguments["owner"].(string)
 	repo := request.Params.Arguments["repo"].(string)
-	number := request.Params.Arguments["number"].(int)
+	numberArg, exists := request.Params.Arguments["number"]
+	if !exists {
+		return mcp.NewToolResultError("Missing required parameter: number"),
+			utils.NewParamError("number", "parameter is required")
+	}
+	number, err := utils.SafelyConvertToInt(numberArg)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), err
+	}
 	apiUrl := fmt.Sprintf("/repos/%s/%s/pulls/%d", owner, repo, number)
 	giteeClient := utils.NewGiteeClient("PATCH", apiUrl, utils.WithPayload(request.Params.Arguments))
 	pull := &types.BasicPull{}
