@@ -4,7 +4,7 @@ Gitee MCP 服务器是一个用于 Gitee 的模型上下文协议（Model Contex
 
 ## 功能特点
 
-- 与 Gitee 仓库、问题、拉取请求和通知进行交互
+- 与 Gitee 仓库、Issue、Pull Request和通知进行交互
 - 可配置的 API 基础 URL，支持不同的 Gitee 实例
 - 命令行标志，便于配置
 - 支持个人、组织和企业操作

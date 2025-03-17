@@ -1,15 +1,13 @@
 # Makefile for cross-platform build
 GO = go
 
-# Version information
-VERSION ?= 0.1.3
 
 # Repository information
 GITEE_OWNER ?= "oschina"
 GITEE_REPO ?= "mcp-gitee"
 
 # Flags
-LDFLAGS = -ldflags "-X main.Version=$(VERSION)"
+LDFLAGS = -ldflags "-s -w"
 BUILD_FLAGS = -o bin/mcp-gitee $(LDFLAGS)
 
 define show_usage_info
@@ -34,9 +32,6 @@ clean:
 	rm -f bin/mcp-gitee
 	@echo "Clean up complete."
 
-# 显示版本信息
-version:
-	@echo "Version: $(VERSION)"
 
 # Clean up release directory
 clean-release:
