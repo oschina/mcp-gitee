@@ -26,8 +26,7 @@ var CreateIssueTool = func() mcp.Tool {
 
 func CreateIssueHandleFunc(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 	owner := request.Params.Arguments["owner"].(string)
-	repo := request.Params.Arguments["repo"].(string)
-	apiUrl := fmt.Sprintf("/repos/%s/%s/issues", owner, repo)
+	apiUrl := fmt.Sprintf("/repos/%s/issues", owner)
 	giteeClient := utils.NewGiteeClient("POST", apiUrl, utils.WithPayload(request.Params.Arguments))
 	issue := &types.BasicIssue{}
 	return giteeClient.HandleMCPResult(issue)
