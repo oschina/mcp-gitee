@@ -63,19 +63,7 @@ mcp-gitee --version
   <a href="docs/install/windsurf.md" title="Windsurf"><img src="docs/install/logos/Windsurf.jpg" width=80 height=80 width="200"></a>
 </div>
 
-**Cursor**:
-
-stdio mode
-```bash
-mcp-gitee -token <Your Personal Access Token>
-```
-
-sse mode
-```bash
-mcp-gitee -transport sse -token <Your Personal Access Token>
-```
-
-**Windsurf**:
+**Cursor**、**Windsurf** 配置示例:
 ```json
 {
   "mcpServers": {
