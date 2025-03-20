@@ -64,14 +64,18 @@ mcp-gitee --version
 
 **Cursor**:
 
-stdio mode
-```bash
-mcp-gitee -token <Your Personal Access Token>
-```
-
-sse mode
-```bash
-mcp-gitee -transport sse -token <Your Personal Access Token>
+```json
+{
+  "mcpServers": {
+    "gitee": {
+      "command": "mcp-gitee",
+      "env": {
+        "GITEE_API_BASE": "https://gitee.com/api/v5",
+        "GITEE_ACCESS_TOKEN": "<your personal access token>"
+      }
+    }
+  }
+}
 ```
 
 **Windsurf**:
