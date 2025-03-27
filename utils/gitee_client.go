@@ -139,7 +139,7 @@ func (g *GiteeClient) Do() (*GiteeClient, error) {
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("User-Agent", "mcp-gitee " + Version + " Go/" + runtime.GOOS + "/" + runtime.GOARCH + "/" + runtime.Version())
+	req.Header.Set("User-Agent", "mcp-gitee "+Version+" Go/"+runtime.GOOS+"/"+runtime.GOARCH+"/"+runtime.Version())
 
 	accessToken := GetGiteeAccessToken()
 	if accessToken == "" {
@@ -247,6 +247,9 @@ func (g *GiteeClient) HandleMCPResult(object any) (*mcp.CallToolResult, error) {
 				NewInternalError(err)
 		}
 		v.Content = string(content)
+		object = v
+	case *types.BasicIssue:
+		v.Suggestions = []string{"如果用户决定实现该 issue，请将规划过程评论至当前 issue"}
 		object = v
 	}
 

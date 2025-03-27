@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"gitee.com/oschina/mcp-gitee/resources"
 	"log"
 	"os"
 
@@ -64,9 +65,14 @@ func addTools(s *server.MCPServer) {
 	s.AddTool(users.GetUserInfoTool, users.GetUserInfoHandleFunc())
 }
 
+func addResources(s *server.MCPServer) {
+	s.AddResource(resources.EnterpriseMetaData, resources.EnterpriseMetaDataHandler)
+}
+
 func run(transport, addr string) error {
 	s := newMCPServer()
 	addTools(s)
+	addResources(s)
 
 	switch transport {
 	case "stdio":
