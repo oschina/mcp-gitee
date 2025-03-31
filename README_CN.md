@@ -4,7 +4,7 @@ Gitee MCP 服务器是一个用于 Gitee 的模型上下文协议（Model Contex
 
 ## 功能特点
 
-- 与 Gitee 仓库、Issue、Pull Request和通知进行交互
+- 与 Gitee 仓库、Issue、Pull Request 和通知进行交互
 - 可配置的 API 基础 URL，支持不同的 Gitee 实例
 - 命令行标志，便于配置
 - 支持个人、组织和企业操作
@@ -16,7 +16,7 @@ Gitee MCP 服务器是一个用于 Gitee 的模型上下文协议（Model Contex
 ![get_repo_issues](./docs/images/get_repo_issues.jpg)
 2. 根据 Issue 详情实现编码 & 创建 Pull Request
 ![implement_issue](./docs/images/implement_issue.jpg)
-3. 评论&关闭Issue
+3. 评论&关闭 Issue
 ![comment_and_close_issue](./docs/images/comment_and_close_issue.jpg)
 </details>
 
@@ -57,13 +57,13 @@ mcp-gitee --version
 ### MCP Hosts 配置
 
 <div align="center">
-  <a href="docs/install/claude.md" title="Claude"><img src="docs/install/logos/Claude.jpg" width=80 height=80 width="200"></a>
-  <a href="docs/install/cursor.md" title="Cursor"><img src="docs/install/logos/Cursor.jpg" width=80 height=80 width="200"></a>
-  <a href="docs/install/cline.md" title="Cline"><img src="docs/install/logos/Cline.png" width=80 height=80 width="200"></a>
-  <a href="docs/install/windsurf.md" title="Windsurf"><img src="docs/install/logos/Windsurf.jpg" width=80 height=80 width="200"></a>
+  <a href="docs/install/claude.md" title="Claude"><img src="docs/install/logos/Claude.png" width=80 height=80></a>
+  <a href="docs/install/cursor.md" title="Cursor"><img src="docs/install/logos/Cursor.png" width=80 height=80></a>
+  <a href="docs/install/cline.md" title="Cline"><img src="docs/install/logos/Cline.png" width=80 height=80></a>
+  <a href="docs/install/windsurf.md" title="Windsurf"><img src="docs/install/logos/Windsurf.png" width=80 height=80></a>
 </div>
 
-**Cursor**、**Windsurf** 配置示例:
+**Cursor**、**Windsurf** 配置示例：
 ```json
 {
   "mcpServers": {
