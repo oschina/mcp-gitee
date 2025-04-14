@@ -62,7 +62,7 @@ mcp-gitee --version
   <a href="docs/install/windsurf.md" title="Windsurf"><img src="docs/install/logos/Windsurf.png" width=80 height=80></a>
 </div>
 
-**Cursor**、**Windsurf** config example:
+config example: [Click to view more application configuration](./docs/install/)
 ```json
 {
   "mcpServers": {
