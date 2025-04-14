@@ -110,6 +110,7 @@ mcp-gitee --version
 | **create_enter_repo**       | 仓库 | 创建企业仓库           |
 | **create_release**          | 仓库 | 为仓库创建发行版         |
 | **list_releases**           | 仓库 | 列出仓库发行版          |
+| **search_open_source_repositories**      | 仓库 | 搜索开源仓库      |
 | **list_repo_pulls**         | Pull Request | 列出仓库中的拉取请求       |
 | **merge_pull**              | Pull Request | 合并拉取请求           |
 | **create_pull**             | Pull Request | 创建拉取请求           |
@@ -124,6 +125,7 @@ mcp-gitee --version
 | **comment_issue**           | Issue | 评论 Issue         |
 | **list_issue_comments**     | Issue | 列出 Issue 的评论     |
 | **get_user_info**           | 用户 | 获取当前认证用户信息 |
+| **search_users**            | 用户 | 搜索用户             |
 | **list_user_notifications** | 通知 | 列出用户通知           |
 
 ## 贡献

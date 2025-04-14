@@ -59,6 +59,7 @@ type GiteeClient struct {
 	Response  *http.Response
 	parsedUrl *url.URL
 	Query     map[string]string
+	SkipAuth  bool
 }
 
 type Option func(client *GiteeClient)
@@ -98,6 +99,8 @@ func WithQuery(query map[string]interface{}) Option {
 					parsedValue = v.(string)
 				case int:
 					parsedValue = strconv.Itoa(v.(int))
+				case float32, float64:
+					parsedValue = fmt.Sprintf("%.f", v)
 				case bool:
 					parsedValue = strconv.FormatBool(v.(bool))
 				}
@@ -125,6 +128,12 @@ func WithHeaders(headers map[string]string) Option {
 	}
 }
 
+func WithSkipAuth() Option {
+	return func(client *GiteeClient) {
+		client.SkipAuth = true
+	}
+}
+
 func (g *GiteeClient) SetHeaders(headers map[string]string) *GiteeClient {
 	g.Headers = headers
 	return g
@@ -139,10 +148,10 @@ func (g *GiteeClient) Do() (*GiteeClient, error) {
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("User-Agent", "mcp-gitee " + Version + " Go/" + runtime.GOOS + "/" + runtime.GOARCH + "/" + runtime.Version())
+	req.Header.Set("User-Agent", "mcp-gitee "+Version+" Go/"+runtime.GOOS+"/"+runtime.GOARCH+"/"+runtime.Version())
 
 	accessToken := GetGiteeAccessToken()
-	if accessToken == "" {
+	if accessToken == "" && !g.SkipAuth {
 		return nil, NewAuthError()
 	}
 

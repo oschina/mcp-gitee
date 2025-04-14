@@ -39,6 +39,7 @@ func addTools(s *server.MCPServer) {
 	s.AddTool(repository.NewCreateRepoTool(repository.CreateEnterRepo), repository.CreateRepoHandleFunc(repository.CreateEnterRepo))
 	s.AddTool(repository.CreateReleaseTool, repository.CreateReleaseHandleFunc)
 	s.AddTool(repository.ListReleasesTool, repository.ListReleasesHandleFunc)
+	s.AddTool(repository.SearchReposTool, repository.SearchOpenSourceReposHandler)
 
 	// Pulls Tools
 	s.AddTool(pulls.NewListPullsTool(pulls.ListRepoPullsToolName), pulls.ListPullsHandleFunc(pulls.ListRepoPullsToolName))
@@ -62,6 +63,7 @@ func addTools(s *server.MCPServer) {
 
 	// Users Tools
 	s.AddTool(users.GetUserInfoTool, users.GetUserInfoHandleFunc())
+	s.AddTool(users.SearchUsersTool, users.SearchUsersHandler)
 }
 
 func run(transport, addr string) error {

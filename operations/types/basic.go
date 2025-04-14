@@ -1,5 +1,10 @@
 package types
 
+type PagedResponse[T any] struct {
+	TotalCount int `json:"total_count"`
+	Data       []T `json:"data"`
+}
+
 type BasicUser struct {
 	Id        int    `json:"id"`
 	Login     string `json:"login"`
@@ -35,6 +40,6 @@ type IssueTypeDetail struct {
 }
 
 type BasicLabel struct {
-	Id    int    `json:"id"`
-	Name  string `json:"name"`
+	Id   int    `json:"id"`
+	Name string `json:"name"`
 }

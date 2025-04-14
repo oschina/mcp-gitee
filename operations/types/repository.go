@@ -36,3 +36,16 @@ type Namespace struct {
 	Path    string `json:"path"`
 	HtmlUrl string `json:"html_url"`
 }
+
+type SearchProject struct {
+	Id          int      `json:"id"`
+	Name        string   `json:"name"`
+	Url         string   `json:"url"`
+	Description string   `json:"description"`
+	Stars       int      `json:"stars"`
+	Forks       int      `json:"forks"`
+	Languages   []string `json:"languages"`
+	LastPushAt  string   `json:"last_push_at"`
+	CreatedAt   string   `json:"created_at"`
+	UpdatedAt   string   `json:"updated_at"`
+}

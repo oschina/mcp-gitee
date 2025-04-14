@@ -109,6 +109,7 @@ The server provides various tools for interacting with Gitee:
 | **create_enter_repo**       | Repository | Create an enterprise repository |
 | **create_release**          | Repository | Create a release for a repository |
 | **list_releases**           | Repository | List repository releases |
+| **search_open_source_repositories**| Repository | Search open source repositories on Gitee |
 | **list_repo_pulls**         | Pull Request | List pull requests in a repository |
 | **merge_pull**              | Pull Request | Merge a pull request |
 | **create_pull**             | Pull Request | Create a pull request |
@@ -123,6 +124,7 @@ The server provides various tools for interacting with Gitee:
 | **comment_issue**           | Issue | Comment on an issue |
 | **list_issue_comments**     | Issue | List comments on an issue |
 | **get_user_info**           | User | Get current authenticated user information |
+| **search_users**             | User | Search for users |
 | **list_user_notifications** | Notification | List user notifications |
 
 ## Contribution
