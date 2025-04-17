@@ -40,6 +40,7 @@ func addTools(s *server.MCPServer) {
 	s.AddTool(repository.CreateReleaseTool, repository.CreateReleaseHandleFunc)
 	s.AddTool(repository.ListReleasesTool, repository.ListReleasesHandleFunc)
 	s.AddTool(repository.SearchReposTool, repository.SearchOpenSourceReposHandler)
+	s.AddTool(repository.ForkRepositoryTool, repository.ForkRepositoryHandler)
 
 	// Pulls Tools
 	s.AddTool(pulls.NewListPullsTool(pulls.ListRepoPullsToolName), pulls.ListPullsHandleFunc(pulls.ListRepoPullsToolName))

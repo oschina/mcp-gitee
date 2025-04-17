@@ -29,7 +29,7 @@ var CreatePullTool = func() mcp.Tool {
 			),
 			mcp.WithString(
 				"head",
-				mcp.Description("The source branch of the pull request"),
+				mcp.Description("The source branch of the pull request, Format: branch (master) or: path_with_namespace:branch (oschina/gitee:master)"),
 				mcp.Required(),
 			),
 			mcp.WithString(

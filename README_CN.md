@@ -101,16 +101,17 @@ mcp-gitee --version
 
 服务器提供了各种与 Gitee 交互的工具：
 
-| 工具                          | 类别 | 描述               |
-|-----------------------------|------|------------------|
-| **list_user_repos**         | 仓库 | 列出用户授权的仓库        |
-| **get_file_content**        | 仓库 | 获取仓库中文件的内容       |
-| **create_user_repo**        | 仓库 | 创建用户仓库           |
-| **create_org_repo**         | 仓库 | 创建组织仓库           |
-| **create_enter_repo**       | 仓库 | 创建企业仓库           |
-| **create_release**          | 仓库 | 为仓库创建发行版         |
-| **list_releases**           | 仓库 | 列出仓库发行版          |
-| **search_open_source_repositories**      | 仓库 | 搜索开源仓库      |
+| 工具                          | 类别           | 描述               |
+|-----------------------------|--------------|------------------|
+| **list_user_repos**         | 仓库           | 列出用户授权的仓库        |
+| **get_file_content**        | 仓库           | 获取仓库中文件的内容       |
+| **create_user_repo**        | 仓库           | 创建用户仓库           |
+| **create_org_repo**         | 仓库           | 创建组织仓库           |
+| **create_enter_repo**       | 仓库           | 创建企业仓库           |
+| **fork_repository**         | 仓库           | Fork 仓库          |
+| **create_release**          | 仓库           | 为仓库创建发行版         |
+| **list_releases**           | 仓库           | 列出仓库发行版          |
+| **search_open_source_repositories** | 仓库           | 搜索开源仓库           |
 | **list_repo_pulls**         | Pull Request | 列出仓库中的拉取请求       |
 | **merge_pull**              | Pull Request | 合并拉取请求           |
 | **create_pull**             | Pull Request | 创建拉取请求           |
@@ -118,15 +119,15 @@ mcp-gitee --version
 | **get_pull_detail**         | Pull Request | 获取拉取请求的详细信息      |
 | **comment_pull**            | Pull Request | 评论拉取请求           |
 | **list_pull_comments**      | Pull Request | 列出拉取请求的所有评论      |
-| **create_issue**            | Issue | 创建 Issue         |
-| **update_issue**            | Issue | 更新 Issue         |
-| **get_repo_issue_detail**   | Issue | 获取仓库 Issue 的详细信息 |
-| **list_repo_issues**        | Issue | 列出仓库 Issue       |
-| **comment_issue**           | Issue | 评论 Issue         |
-| **list_issue_comments**     | Issue | 列出 Issue 的评论     |
-| **get_user_info**           | 用户 | 获取当前认证用户信息 |
-| **search_users**            | 用户 | 搜索用户             |
-| **list_user_notifications** | 通知 | 列出用户通知           |
+| **create_issue**            | Issue        | 创建 Issue         |
+| **update_issue**            | Issue        | 更新 Issue         |
+| **get_repo_issue_detail**   | Issue        | 获取仓库 Issue 的详细信息 |
+| **list_repo_issues**        | Issue        | 列出仓库 Issue       |
+| **comment_issue**           | Issue        | 评论 Issue         |
+| **list_issue_comments**     | Issue        | 列出 Issue 的评论     |
+| **get_user_info**           | 用户           | 获取当前认证用户信息       |
+| **search_users**            | 用户           | 搜索用户             |
+| **list_user_notifications** | 通知           | 列出用户通知           |
 
 ## 贡献
 

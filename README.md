@@ -100,32 +100,33 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 The server provides various tools for interacting with Gitee:
 
-| Tool                        | Category | Description |
-|-----------------------------|----------|-------------|
-| **list_user_repos**         | Repository | List user authorized repositories |
-| **get_file_content**        | Repository | Get the content of a file in a repository |
-| **create_user_repo**        | Repository | Create a user repository |
-| **create_org_repo**         | Repository | Create an organization repository |
-| **create_enter_repo**       | Repository | Create an enterprise repository |
-| **create_release**          | Repository | Create a release for a repository |
-| **list_releases**           | Repository | List repository releases |
-| **search_open_source_repositories**| Repository | Search open source repositories on Gitee |
-| **list_repo_pulls**         | Pull Request | List pull requests in a repository |
-| **merge_pull**              | Pull Request | Merge a pull request |
-| **create_pull**             | Pull Request | Create a pull request |
-| **update_pull**             | Pull Request | Update a pull request |
-| **get_pull_detail**         | Pull Request | Get details of a pull request |
-| **comment_pull**            | Pull Request | Comment on a pull request |
-| **list_pull_comments**      | Pull Request | List all comments for a pull request |
-| **create_issue**            | Issue | Create an issue |
-| **update_issue**            | Issue | Update an issue |
-| **get_repo_issue_detail**   | Issue | Get details of a repository issue |
-| **list_repo_issues**        | Issue | List repository issues |
-| **comment_issue**           | Issue | Comment on an issue |
-| **list_issue_comments**     | Issue | List comments on an issue |
-| **get_user_info**           | User | Get current authenticated user information |
-| **search_users**             | User | Search for users |
-| **list_user_notifications** | Notification | List user notifications |
+| Tool                                | Category | Description |
+|-------------------------------------|----------|-------------|
+| **list_user_repos**                 | Repository | List user authorized repositories |
+| **get_file_content**                | Repository | Get the content of a file in a repository |
+| **create_user_repo**                | Repository | Create a user repository |
+| **create_org_repo**                 | Repository | Create an organization repository |
+| **create_enter_repo**               | Repository | Create an enterprise repository |
+| **fork_repository**                 | Repository | Fork a repository |
+| **create_release**                  | Repository | Create a release for a repository |
+| **list_releases**                   | Repository | List repository releases |
+| **search_open_source_repositories** | Repository | Search open source repositories on Gitee |
+| **list_repo_pulls**                 | Pull Request | List pull requests in a repository |
+| **merge_pull**                      | Pull Request | Merge a pull request |
+| **create_pull**                     | Pull Request | Create a pull request |
+| **update_pull**                     | Pull Request | Update a pull request |
+| **get_pull_detail**                 | Pull Request | Get details of a pull request |
+| **comment_pull**                    | Pull Request | Comment on a pull request |
+| **list_pull_comments**              | Pull Request | List all comments for a pull request |
+| **create_issue**                    | Issue | Create an issue |
+| **update_issue**                    | Issue | Update an issue |
+| **get_repo_issue_detail**           | Issue | Get details of a repository issue |
+| **list_repo_issues**                | Issue | List repository issues |
+| **comment_issue**                   | Issue | Comment on an issue |
+| **list_issue_comments**             | Issue | List comments on an issue |
+| **get_user_info**                   | User | Get current authenticated user information |
+| **search_users**                    | User | Search for users |
+| **list_user_notifications**         | Notification | List user notifications |
 
 ## Contribution
 
