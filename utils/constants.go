@@ -2,5 +2,5 @@ package utils
 
 var (
 	// Version gitee mcp server version
-	Version = "0.1.8"
+	Version = "0.1.9"
 )
