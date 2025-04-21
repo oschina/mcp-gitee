@@ -47,7 +47,8 @@ var CreateReleaseTool = mcp.NewTool(
 	),
 	mcp.WithString(
 		"target_commitish",
-		mcp.Description("The branch name or commit SHA"),
+		mcp.Description("The branch name or commit SHA, defaults to the repository's default branch"),
+		mcp.Required(),
 	),
 )
 
