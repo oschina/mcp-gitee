@@ -67,7 +67,7 @@ config example: [Click to view more application configuration](./docs/install/)
 ```json
 {
   "mcpServers": {
-    "gitee-ent": {
+    "gitee": {
       "command": "npx",
       "args": [
         "-y",

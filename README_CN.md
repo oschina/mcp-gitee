@@ -68,7 +68,7 @@ mcp-gitee --version
 ```json
 {
   "mcpServers": {
-    "gitee-ent": {
+    "gitee": {
       "command": "npx",
       "args": [
         "-y",
