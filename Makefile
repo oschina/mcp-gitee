@@ -1,5 +1,9 @@
 # Makefile for cross-platform build
+BINARY_NAME = mcp-gitee
+NPM_VERSION = 0.1.9
 GO = go
+OSES = darwin linux windows
+ARCHS = amd64 arm64
 
 
 # Repository information
@@ -31,6 +35,38 @@ build:
 clean:
 	rm -f bin/mcp-gitee
 	@echo "Clean up complete."
+
+
+.PHONY: build-all-platforms
+build-all-platforms:
+	$(foreach os,$(OSES),$(foreach arch,$(ARCHS), \
+		GOOS=$(os) GOARCH=$(arch) go build $(BUILD_FLAGS) -o $(BINARY_NAME)-$(os)-$(arch)$(if $(findstring windows,$(os)),.exe,) main.go; \
+	))
+
+.PHONY: npm-copy-binaries
+npm-copy-binaries: build-all-platforms
+	$(foreach os,$(OSES),$(foreach arch,$(ARCHS), \
+		EXECUTABLE=./$(BINARY_NAME)-$(os)-$(arch)$(if $(findstring windows,$(os)),.exe,); \
+		DIRNAME=$(BINARY_NAME)-$(os)-$(arch); \
+		mkdir -p ./npm/$$DIRNAME/bin; \
+		cp $$EXECUTABLE ./npm/$$DIRNAME/bin/; \
+	))
+
+.PHONY: npm-publish
+npm-publish: npm-copy-binaries ## Publish the npm packages
+	$(foreach os,$(OSES),$(foreach arch,$(ARCHS), \
+		DIRNAME="$(BINARY_NAME)-$(os)-$(arch)"; \
+		cd npm/$$DIRNAME; \
+		echo '//registry.npmjs.org/:_authToken=$(NPM_TOKEN)' >> .npmrc; \
+		jq '.version = "$(NPM_VERSION)"' package.json > tmp.json && mv tmp.json package.json; \
+		npm publish; \
+		cd ../..; \
+	))
+	cp README.md LICENSE ./npm/mcp-gitee/
+	echo '//registry.npmjs.org/:_authToken=$(NPM_TOKEN)' >> ./npm/mcp-gitee/.npmrc
+	jq '.version = "$(NPM_VERSION)"' ./npm/mcp-gitee/package.json > tmp.json && mv tmp.json ./npm/mcp-gitee/package.json; \
+	jq '.optionalDependencies |= with_entries(.value = "$(NPM_VERSION)")' ./npm/mcp-gitee/package.json > tmp.json && mv tmp.json ./npm/mcp-gitee/package.json; \
+	cd npm/mcp-gitee && npm publish
 
 
 # Clean up release directory

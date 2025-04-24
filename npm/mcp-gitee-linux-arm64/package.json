@@ -1,0 +1,14 @@
+{
+  "name": "@gitee/mcp-gitee-linux-arm64",
+  "version": "0.1.9",
+  "description": "Model Context Protocol (MCP) server for Gitee",
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}

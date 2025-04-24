@@ -1,0 +1,41 @@
+{
+  "name": "@gitee/mcp-gitee",
+  "version": "0.1.9",
+  "description": "Model Context Protocol (MCP) server for Gitee",
+  "main": "./bin/index.js",
+  "bin": {
+    "mcp-gitee": "bin/index.js"
+  },
+  "optionalDependencies": {
+    "@gitee/mcp-gitee-darwin-amd64": "0.1.9",
+    "@gitee/mcp-gitee-darwin-arm64": "0.1.9",
+    "@gitee/mcp-gitee-linux-amd64": "0.1.9",
+    "@gitee/mcp-gitee-linux-arm64": "0.1.9",
+    "@gitee/mcp-gitee-windows-amd64": "0.1.9",
+    "@gitee/mcp-gitee-windows-arm64": "0.1.9"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitee.com/oschina/mcp-gitee.git"
+  },
+  "keywords": [
+    "mcp",
+    "gitee",
+    "model context protocol",
+    "model",
+    "context",
+    "protocol"
+  ],
+  "author": {
+    "name": "Gitee",
+    "url": "https://gitee.com/oschina"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://gitee.com/oschina/mcp-gitee/issues"
+  },
+  "homepage": "https://gitee.com/oschina/mcp-gitee#readme",
+  "publishConfig": {
+    "access": "public"
+  }
+}
