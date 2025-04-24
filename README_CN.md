@@ -64,6 +64,25 @@ mcp-gitee --version
 </div>
 
 配置示例：[点击查看更多应用配置](./docs/install/)
+- npx 启动
+```json
+{
+  "mcpServers": {
+    "gitee-ent": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@gitee/mcp-gitee@latest"
+      ],
+      "env": {
+        "GITEE_API_BASE": "https://gitee.com/api/v5",
+        "GITEE_ACCESS_TOKEN": "<your personal access token>"
+      }
+    }
+  }
+}
+```
+- 可执行文件启动
 ```json
 {
   "mcpServers": {
