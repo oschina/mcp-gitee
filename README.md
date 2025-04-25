@@ -20,7 +20,7 @@ Gitee MCP Server is a Model Context Protocol (MCP) server implementation for Git
 ![comment_and_close_issue](./docs/images/comment_and_close_issue.jpg)
 </details>
 
-## Installation
+## Installation(This step can be skipped directly when starting npx)
 
 ### Prerequisites
 
@@ -54,10 +54,11 @@ Check mcp-gitee version:
 mcp-gitee --version
 ```
 
-### MCP Hosts Configuration
+## MCP Hosts Configuration
 <div align="center">
   <a href="docs/install/claude.md" title="Claude"><img src="docs/install/logos/Claude.png" width=80 height=80></a>
   <a href="docs/install/cursor.md" title="Cursor"><img src="docs/install/logos/Cursor.png" width=80 height=80></a>
+  <a href="docs/install/trae.md" title="Windsurf"><img src="docs/install/logos/Trae.png" width=80 height=80></a>
   <a href="docs/install/cline.md" title="Cline"><img src="docs/install/logos/Cline.png" width=80 height=80></a>
   <a href="docs/install/windsurf.md" title="Windsurf"><img src="docs/install/logos/Windsurf.png" width=80 height=80></a>
 </div>

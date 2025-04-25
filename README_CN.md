@@ -20,7 +20,7 @@ Gitee MCP 服务器是一个用于 Gitee 的模型上下文协议（Model Contex
 ![comment_and_close_issue](./docs/images/comment_and_close_issue.jpg)
 </details>
 
-## 安装
+## 安装（npx 启动可直接跳过该步骤）
 
 ### 前提条件
 
@@ -54,11 +54,12 @@ Gitee MCP 服务器是一个用于 Gitee 的模型上下文协议（Model Contex
 mcp-gitee --version
 ```
 
-### MCP Hosts 配置
+## MCP Hosts 配置
 
 <div align="center">
   <a href="docs/install/claude.md" title="Claude"><img src="docs/install/logos/Claude.png" width=80 height=80></a>
   <a href="docs/install/cursor.md" title="Cursor"><img src="docs/install/logos/Cursor.png" width=80 height=80></a>
+  <a href="docs/install/trae.md" title="Windsurf"><img src="docs/install/logos/Trae.png" width=80 height=80></a>
   <a href="docs/install/cline.md" title="Cline"><img src="docs/install/logos/Cline.png" width=80 height=80></a>
   <a href="docs/install/windsurf.md" title="Windsurf"><img src="docs/install/logos/Windsurf.png" width=80 height=80></a>
 </div>
