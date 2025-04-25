@@ -59,7 +59,7 @@ mcp-gitee --version
 <div align="center">
   <a href="docs/install/claude.md" title="Claude"><img src="docs/install/logos/Claude.png" width=80 height=80></a>
   <a href="docs/install/cursor.md" title="Cursor"><img src="docs/install/logos/Cursor.png" width=80 height=80></a>
-  <a href="docs/install/trae.md" title="Windsurf"><img src="docs/install/logos/Trae.png" width=80 height=80></a>
+  <a href="docs/install/trae.md" title="Trae"><img src="docs/install/logos/Trae.png" width=80 height=80></a>
   <a href="docs/install/cline.md" title="Cline"><img src="docs/install/logos/Cline.png" width=80 height=80></a>
   <a href="docs/install/windsurf.md" title="Windsurf"><img src="docs/install/logos/Windsurf.png" width=80 height=80></a>
 </div>
