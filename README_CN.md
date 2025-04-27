@@ -8,6 +8,7 @@ Gitee MCP 服务器是一个用于 Gitee 的模型上下文协议（Model Contex
 - 可配置的 API 基础 URL，支持不同的 Gitee 实例
 - 命令行标志，便于配置
 - 支持个人、组织和企业操作
+- 支持动态启用/禁用工具集
 
 <details>
 <summary><b>实战场景：从仓库获取 Issue，实现并创建 Pull Request</b></summary>
@@ -100,11 +101,13 @@ mcp-gitee --version
 
 ### 命令行选项
 
-- `-token`：Gitee 访问令牌
-- `-api-base`：Gitee API 基础 URL（默认：https://gitee.com/api/v5）
-- `-version`：显示版本信息
-- `-transport`：传输类型（stdio 或 sse，默认：stdio）
-- `-sse-address`：启动 SSE 服务器的主机和端口（默认：localhost:8000）
+- `--token`：Gitee 访问令牌
+- `--api-base`：Gitee API 基础 URL（默认：https://gitee.com/api/v5）
+- `--version`：显示版本信息
+- `--transport`：传输类型（stdio 或 sse，默认：stdio）
+- `--sse-address`：启动 SSE 服务器的主机和端口（默认：localhost:8000）
+- `--enabled-toolsets`: 逗号分隔的要启用的工具列表（如果指定，则只启用这些工具）
+- `--disabled-toolsets`: 逗号分隔的要禁用的工具列表
 
 ### 环境变量
 
@@ -112,6 +115,26 @@ mcp-gitee --version
 
 - `GITEE_ACCESS_TOKEN`：Gitee 访问令牌
 - `GITEE_API_BASE`：Gitee API 基础 URL
+- `ENABLED_TOOLSETS`: 逗号分隔的要启用的工具列表
+- `DISABLED_TOOLSETS`: 逗号分隔的要禁用的工具列表
+
+### 工具集管理
+
+工具集管理支持两种模式：
+
+1. 启用指定工具（白名单模式）：
+   - 使用 `--enabled-toolsets` 参数或 `ENABLED_TOOLSETS` 环境变量
+   - 指定后，只有列出的工具会被启用，其他工具都会被禁用
+   - 例如：`--enabled-toolsets="update_enterprise_issue,list_enterprise_repositories"`
+
+2. 禁用指定工具（黑名单模式）：
+   - 使用 `--disabled-toolsets` 参数或 `DISABLED_TOOLSETS` 环境变量
+   - 指定后，列出的工具会被禁用，其他工具保持启用
+   - 例如：`--disabled-toolsets="update_enterprise_issue,list_enterprise_repositories"`
+
+注意：
+- 如果同时指定了 `enabled-toolsets` 和 `disabled-toolsets`，则 `enabled-toolsets` 优先
+- 工具名称区分大小写
 
 ## 许可证
 

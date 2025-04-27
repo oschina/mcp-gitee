@@ -8,6 +8,7 @@ Gitee MCP Server is a Model Context Protocol (MCP) server implementation for Git
 - Configurable API base URL to support different Gitee instances
 - Command-line flags for easy configuration
 - Supports both personal, organization, and enterprise operations
+- Dynamic toolset enable/disable
 
 <details>
 <summary><b>Practical scenario: Obtain Issue from the repository, implement and create a Pull Request</b></summary>
@@ -99,11 +100,13 @@ config example: [Click to view more application configuration](./docs/install/)
 
 ### Command-line Options
 
-- `-token`: Gitee access token
-- `-api-base`: Gitee API base URL (default: https://gitee.com/api/v5)
-- `-version`: Show version information
-- `-transport`: Transport type (stdio or sse, default: stdio)
-- `-sse-address`: The host and port to start the SSE server on (default: localhost:8000)
+- `--token`: Gitee access token
+- `--api-base`: Gitee API base URL (default: https://gitee.com/api/v5)
+- `--version`: Show version information
+- `--transport`: Transport type (stdio or sse, default: stdio)
+- `--sse-address`: The host and port to start the SSE server on (default: localhost:8000)
+- `--enabled-toolsets`: Comma-separated list of tools to enable (if specified, only these tools will be enabled)
+- `--disabled-toolsets`: Comma-separated list of tools to disable
 
 ### Environment Variables
 
@@ -111,6 +114,26 @@ You can also configure the server using environment variables:
 
 - `GITEE_ACCESS_TOKEN`: Gitee access token
 - `GITEE_API_BASE`: Gitee API base URL
+- `ENABLED_TOOLSETS`: Comma-separated list of tools to enable
+- `DISABLED_TOOLSETS`: Comma-separated list of tools to disable
+
+### Toolset Management
+
+Toolset management supports two modes:
+
+1. Enable specified tools (whitelist mode):
+   - Use `--enabled-toolsets` parameter or `ENABLED_TOOLSETS` environment variable
+   - Specify after, only listed tools will be enabled, others will be disabled
+   - Example: `--enabled-toolsets="list_user_repos,get_file_content"`
+
+2. Disable specified tools (blacklist mode):
+   - Use `--disabled-toolsets` parameter or `DISABLED_TOOLSETS` environment variable
+   - Specify after, listed tools will be disabled, others will be enabled
+   - Example: `--disabled-toolsets="list_user_repos,get_file_content"`
+
+Note:
+- If both `enabled-toolsets` and `disabled-toolsets` are specified, `enabled-toolsets` takes precedence
+- Tool names are case-sensitive
 
 ## License
 

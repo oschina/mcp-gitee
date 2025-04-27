@@ -4,8 +4,10 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"github.com/mark3labs/mcp-go/mcp"
 	"log"
 	"os"
+	"strings"
 
 	"gitee.com/oschina/mcp-gitee/operations/issues"
 	"gitee.com/oschina/mcp-gitee/operations/notifications"
@@ -18,7 +20,9 @@ import (
 )
 
 var (
-	Version = utils.Version
+	Version              = utils.Version
+	disabledToolsetsFlag string
+	enabledToolsetsFlag  string
 )
 
 func newMCPServer() *server.MCPServer {
@@ -30,46 +34,111 @@ func newMCPServer() *server.MCPServer {
 	)
 }
 
+func addTool(s *server.MCPServer, tool mcp.Tool, handleFunc server.ToolHandlerFunc) {
+	enabledToolsets := getEnabledToolsets()
+	if len(enabledToolsets) == 0 {
+		s.AddTool(tool, handleFunc)
+		return
+	}
+
+	for i := range enabledToolsets {
+		enabledToolsets[i] = strings.TrimSpace(enabledToolsets[i])
+	}
+
+	for _, keepTool := range enabledToolsets {
+		if tool.Name == keepTool {
+			s.AddTool(tool, handleFunc)
+			return
+		}
+	}
+}
+
+func disableTools(s *server.MCPServer) {
+	if enabledToolsetsFlag != "" {
+		enabledToolsetsFlag = os.Getenv("ENABLED_TOOLSETS")
+	}
+
+	if enabledToolsetsFlag != "" {
+		return
+	}
+
+	if disabledTools := getDisabledToolsets(); len(disabledTools) > 0 {
+		s.DeleteTools(disabledTools...)
+	}
+}
+
 func addTools(s *server.MCPServer) {
 	// Repository Tools
-	s.AddTool(repository.ListUserReposTool, repository.ListUserReposHandler)
-	s.AddTool(repository.GetFileContentTool, repository.GetFileContentHandler)
-	s.AddTool(repository.NewCreateRepoTool(repository.CreateUserRepo), repository.CreateRepoHandleFunc(repository.CreateUserRepo))
-	s.AddTool(repository.NewCreateRepoTool(repository.CreateOrgRepo), repository.CreateRepoHandleFunc(repository.CreateOrgRepo))
-	s.AddTool(repository.NewCreateRepoTool(repository.CreateEnterRepo), repository.CreateRepoHandleFunc(repository.CreateEnterRepo))
-	s.AddTool(repository.CreateReleaseTool, repository.CreateReleaseHandleFunc)
-	s.AddTool(repository.ListReleasesTool, repository.ListReleasesHandleFunc)
-	s.AddTool(repository.SearchReposTool, repository.SearchOpenSourceReposHandler)
-	s.AddTool(repository.ForkRepositoryTool, repository.ForkRepositoryHandler)
+	addTool(s, repository.ListUserReposTool, repository.ListUserReposHandler)
+	addTool(s, repository.GetFileContentTool, repository.GetFileContentHandler)
+	addTool(s, repository.NewCreateRepoTool(repository.CreateUserRepo), repository.CreateRepoHandleFunc(repository.CreateUserRepo))
+	addTool(s, repository.NewCreateRepoTool(repository.CreateOrgRepo), repository.CreateRepoHandleFunc(repository.CreateOrgRepo))
+	addTool(s, repository.NewCreateRepoTool(repository.CreateEnterRepo), repository.CreateRepoHandleFunc(repository.CreateEnterRepo))
+	addTool(s, repository.CreateReleaseTool, repository.CreateReleaseHandleFunc)
+	addTool(s, repository.ListReleasesTool, repository.ListReleasesHandleFunc)
+	addTool(s, repository.SearchReposTool, repository.SearchOpenSourceReposHandler)
+	addTool(s, repository.ForkRepositoryTool, repository.ForkRepositoryHandler)
 
 	// Pulls Tools
-	s.AddTool(pulls.NewListPullsTool(pulls.ListRepoPullsToolName), pulls.ListPullsHandleFunc(pulls.ListRepoPullsToolName))
-	s.AddTool(pulls.CreatePullTool, pulls.CreatePullHandleFunc)
-	s.AddTool(pulls.UpdatePullTool, pulls.UpdatePullHandleFunc)
-	s.AddTool(pulls.GetPullDetailTool, pulls.GetPullDetailHandleFunc)
-	s.AddTool(pulls.CommentPullTool, pulls.CommentPullHandleFunc)
-	s.AddTool(pulls.MergePullTool, pulls.MergePullHandleFunc)
-	s.AddTool(pulls.ListPullCommentsTool, pulls.ListPullCommentsHandleFunc)
+	addTool(s, pulls.NewListPullsTool(pulls.ListRepoPullsToolName), pulls.ListPullsHandleFunc(pulls.ListRepoPullsToolName))
+	addTool(s, pulls.CreatePullTool, pulls.CreatePullHandleFunc)
+	addTool(s, pulls.UpdatePullTool, pulls.UpdatePullHandleFunc)
+	addTool(s, pulls.GetPullDetailTool, pulls.GetPullDetailHandleFunc)
+	addTool(s, pulls.CommentPullTool, pulls.CommentPullHandleFunc)
+	addTool(s, pulls.MergePullTool, pulls.MergePullHandleFunc)
+	addTool(s, pulls.ListPullCommentsTool, pulls.ListPullCommentsHandleFunc)
 
 	// Issues Tools
-	s.AddTool(issues.CreateIssueTool, issues.CreateIssueHandleFunc)
-	s.AddTool(issues.UpdateIssueTool, issues.UpdateIssueHandleFunc)
-	s.AddTool(issues.NewGetIssueDetailTool(issues.GetRepoIssueDetailToolName), issues.GetIssueDetailHandleFunc(issues.GetRepoIssueDetailToolName))
-	s.AddTool(issues.NewListIssuesTool(issues.ListRepoIssuesToolName), issues.ListIssuesHandleFunc(issues.ListRepoIssuesToolName))
-	s.AddTool(issues.CommentIssueTool, issues.CommentIssueHandleFunc)
-	s.AddTool(issues.ListIssueCommentsTool, issues.ListIssueCommentsHandleFunc)
+	addTool(s, issues.CreateIssueTool, issues.CreateIssueHandleFunc)
+	addTool(s, issues.UpdateIssueTool, issues.UpdateIssueHandleFunc)
+	addTool(s, issues.NewGetIssueDetailTool(issues.GetRepoIssueDetailToolName), issues.GetIssueDetailHandleFunc(issues.GetRepoIssueDetailToolName))
+	addTool(s, issues.NewListIssuesTool(issues.ListRepoIssuesToolName), issues.ListIssuesHandleFunc(issues.ListRepoIssuesToolName))
+	addTool(s, issues.CommentIssueTool, issues.CommentIssueHandleFunc)
+	addTool(s, issues.ListIssueCommentsTool, issues.ListIssueCommentsHandleFunc)
 
 	// Notifications Tools
-	s.AddTool(notifications.ListUserNotificationsTool, notifications.ListUserNotificationsHandler)
+	addTool(s, notifications.ListUserNotificationsTool, notifications.ListUserNotificationsHandler)
 
 	// Users Tools
-	s.AddTool(users.GetUserInfoTool, users.GetUserInfoHandleFunc())
-	s.AddTool(users.SearchUsersTool, users.SearchUsersHandler)
+	addTool(s, users.GetUserInfoTool, users.GetUserInfoHandleFunc())
+	addTool(s, users.SearchUsersTool, users.SearchUsersHandler)
+}
+
+func getDisabledToolsets() []string {
+	if disabledToolsetsFlag == "" {
+		disabledToolsetsFlag = os.Getenv("DISABLED_TOOLSETS")
+	}
+
+	if disabledToolsetsFlag == "" {
+		return nil
+	}
+
+	tools := strings.Split(disabledToolsetsFlag, ",")
+	for i := range tools {
+		tools[i] = strings.TrimSpace(tools[i])
+	}
+
+	return tools
+}
+
+func getEnabledToolsets() []string {
+	if enabledToolsetsFlag == "" {
+		enabledToolsetsFlag = os.Getenv("ENABLED_TOOLSETS")
+	}
+	if enabledToolsetsFlag == "" {
+		return nil
+	}
+	tools := strings.Split(enabledToolsetsFlag, ",")
+	for i := range tools {
+		tools[i] = strings.TrimSpace(tools[i])
+	}
+	return tools
 }
 
 func run(transport, addr string) error {
 	s := newMCPServer()
 	addTools(s)
+	disableTools(s)
 
 	switch transport {
 	case "stdio":
@@ -103,6 +172,8 @@ func main() {
 	showVersion := flag.Bool("version", false, "Show version information")
 	transport := flag.String("transport", "stdio", "Transport type (stdio or sse)")
 	addr := flag.String("sse-address", "localhost:8000", "The host and port to start the sse server on")
+	flag.StringVar(&disabledToolsetsFlag, "disabled-toolsets", "", "Comma-separated list of tools to disable")
+	flag.StringVar(&enabledToolsetsFlag, "enabled-toolsets", "", "Comma-separated list of tools to enable (if specified, only these tools will be available)")
 	flag.Parse()
 
 	if *showVersion {
