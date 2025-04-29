@@ -1,0 +1,28 @@
+
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    required:
+      - accessToken
+    properties:
+      accessToken:
+        type: string
+        description: Gitee Personal Access Token
+      apiBase:
+        type: string
+        default: https://gitee.com/api/v5
+        description: Gitee API Base URL
+  commandFunction:
+    |-
+    (config) => ({
+      command: '/app/mcp-gitee',
+      args: ['--transport', 'stdio'],
+      env: {
+        GITEE_ACCESS_TOKEN: config.accessToken,
+        GITEE_API_BASE: config.apiBase || 'https://gitee.com/api/v5'
+      }
+    })
+  exampleConfig:
+    accessToken: dummy-token
+    apiBase: https://gitee.com/api/v5

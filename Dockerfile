@@ -37,4 +37,4 @@ USER gitee
 EXPOSE 8000
 
 # Run the application
-ENTRYPOINT ["/app/mcp-gitee", "--transport", "sse", "--sse-address", "0.0.0.0:8000"]
+ENTRYPOINT ["/app/mcp-gitee"]
