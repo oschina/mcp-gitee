@@ -1,0 +1,88 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# MCP-Gitee Cursor Rule
+
+## 1. 工具选择与基本规则
+
+- 用户可通过工具名称（如 list_user_repos、create_issue、create_pull 等）选择所需操作。
+- 每个工具均有简要描述，帮助用户理解其用途。
+- 工具参数分为必填和可选，必填项未填写时禁止提交，可选项未填写时自动采用默认值。
+- 参数类型、可选值、默认值均由系统自动校验和提示。
+
+## 2. 参数填写与校验
+
+- 所有参数均有类型校验（如数字、字符串、布尔值）。
+- 枚举参数（如 visibility、state 等）仅允许选择指定范围内的值。
+- project_id、program_id、assignee_id 等 ID 参数必须为数字，禁止填写名称或别名。
+- 若参数为 ID 且用户不清楚，可先通过相关工具（如 search_users、list_user_repos）查询获取。
+
+## 3. 工具组合与典型流程
+
+### 3.1 仓库/项目管理
+
+- 查询我的仓库：使用 list_user_repos，支持按 affiliation、type、visibility 等筛选。
+- 查看仓库文件：选中仓库后，使用 get_file_content 查看 README 或其他文件。
+- 在仓库下创建 Issue/Pull Request：结合 create_issue 或 create_pull 工具。
+
+### 3.2 工作项流转
+
+- 查找项目下工作项：先用 list_user_repos 找到仓库，再用 list_repo_issues。
+- 筛选我负责的工作项：list_repo_issues 填写 assignee_id（数字）。
+- 更新/评论工作项：选中 Issue 后，使用 update_issue 或 comment_issue。
+
+### 3.3 协作与代码合并
+
+- 发起 Pull Request：list_user_repos 找到仓库，create_pull 填写分支、assignees 等。
+- 查看/评论 Pull Request：list_repo_pulls 查看，list_pull_comments 或 comment_pull 参与讨论。
+- 合并 Pull Request：merge_pull 工具。
+
+### 3.4 版本发布
+
+- 查看 Release：list_releases。
+- 创建 Release：create_release，填写版本号、描述、目标分支等。
+
+## 4. 工具间参数传递
+
+- 工具输出的仓库名、用户ID、项目ID等可直接作为下一个工具的输入。
+- 复杂操作建议分步进行，每步均可利用工具的筛选、查询和补全能力。
+
+## 5. 智能提示与交互
+
+- 系统自动提示参数类型、可选值、必填项。
+- 参数填写错误时，系统给出明确提示并指导修正。
+- 支持下拉选择、自动补全，减少手动输入错误。
+- 不确定参数含义时，可查看工具描述或帮助文档。
+
+## 6. 典型操作流程示例
+
+### 示例1：新建 Issue 并指派同事
+
+1. list_user_repos 查询仓库
+2. search_users 查询同事ID
+3. create_issue 填写 owner、repo、title、assignee（同事ID）、program（项目ID，数字）
+
+### 示例2：查找并处理我负责的工作项
+
+1. list_user_repos 查询仓库
+2. list_repo_issues 填写 assignee_id（你的ID）
+3. update_issue 或 comment_issue 处理任务
+
+### 示例3：发起代码合并并通知评审
+
+1. list_user_repos 查询仓库
+2. create_pull 发起 PR，填写 assignees
+3. comment_pull 留言提醒评审
+
+### 示例3：实现 Issue 并创建 Pull Request
+1. 获取 Issue 详情：get_repo_issue_detail
+2. 获取 Issue 评论：list_issue_comments
+3. 新建分支
+4. 实现 Issue
+5. 推送至远端 && 创建 Pull Request：create_pull
+
+---
+
+**本规则适用于所有 MCP-Gitee 工具的终端用户，旨在提升操作效率、减少出错，支持多工具组合与参数智能传递。**
