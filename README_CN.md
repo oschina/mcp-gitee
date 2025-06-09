@@ -2,6 +2,8 @@
 
 Gitee MCP 服务器是一个用于 Gitee 的模型上下文协议（Model Context Protocol，MCP）服务器实现。它提供了一系列与 Gitee API 交互的工具，使 AI 助手能够管理仓库、问题、拉取请求等。
 
+[![Install MCP Server](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/install-mcp?name=gitee&config=eyJjb21tYW5kIjoibnB4IC15IEBnaXRlZS9tY3AtZ2l0ZWVAbGF0ZXN0IiwiZW52Ijp7IkdJVEVFX0FDQ0VTU19UT0tFTiI6Ijx5b3VyIHBlcnNvbmFsIGFjY2VzcyB0b2tlbj4ifX0%3D)
+
 ## 功能特点
 
 - 与 Gitee 仓库、Issue、Pull Request 和通知进行交互
