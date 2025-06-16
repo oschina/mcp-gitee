@@ -3,6 +3,7 @@ package issues
 import (
 	"context"
 	"fmt"
+
 	"gitee.com/oschina/mcp-gitee/operations/types"
 	"gitee.com/oschina/mcp-gitee/utils"
 	"github.com/mark3labs/mcp-go/mcp"
@@ -42,15 +43,16 @@ var CommentIssueTool = func() mcp.Tool {
 // CommentIssueHandleFunc handles the request to comment on an issue
 func CommentIssueHandleFunc(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 	// Extract required parameters from the request
-	owner := request.Params.Arguments["owner"].(string)
-	repo := request.Params.Arguments["repo"].(string)
-	number := request.Params.Arguments["number"].(string)
+	args, _ := utils.ConvertArgumentsToMap(request.Params.Arguments)
+	owner := args["owner"].(string)
+	repo := args["repo"].(string)
+	number := args["number"].(string)
 
 	// Construct the API URL for creating a comment on an issue
 	apiUrl := fmt.Sprintf("/repos/%s/%s/issues/%s/comments", owner, repo, number)
 
 	// Create a new Gitee client with the POST method and the constructed API URL
-	giteeClient := utils.NewGiteeClient("POST", apiUrl, utils.WithPayload(request.Params.Arguments))
+	giteeClient := utils.NewGiteeClient("POST", apiUrl, utils.WithContext(ctx), utils.WithPayload(request.Params.Arguments))
 
 	// Define the response structure
 	comment := &types.IssueComment{}

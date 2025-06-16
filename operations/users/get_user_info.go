@@ -22,7 +22,7 @@ var GetUserInfoTool = mcp.NewTool(
 
 // GetUserInfoHandler handles the request to get authorized user information
 func GetUserInfoHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-	client := utils.NewGiteeClient("GET", "/user")
+	client := utils.NewGiteeClient("GET", "/user", utils.WithContext(ctx))
 
 	var user types.BasicUser
 	return client.HandleMCPResult(&user)

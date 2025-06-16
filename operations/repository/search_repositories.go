@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+
 	"gitee.com/oschina/mcp-gitee/operations/types"
 	"gitee.com/oschina/mcp-gitee/utils"
 	"github.com/mark3labs/mcp-go/mcp"
@@ -36,12 +37,13 @@ var SearchReposTool = mcp.NewTool(SearchOpenSourceRepositories,
 )
 
 func SearchOpenSourceReposHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-	if checkResult, err := utils.CheckRequired(request.Params.Arguments, "q"); err != nil {
+	args, _ := utils.ConvertArgumentsToMap(request.Params.Arguments)
+	if checkResult, err := utils.CheckRequired(args, "q"); err != nil {
 		return checkResult, err
 	}
 
 	apiUrl := "/search/repos"
-	giteeClient := utils.NewGiteeClient("GET", apiUrl, utils.WithQuery(request.Params.Arguments), utils.WithSkipAuth())
+	giteeClient := utils.NewGiteeClient("GET", apiUrl, utils.WithContext(ctx), utils.WithQuery(args), utils.WithSkipAuth())
 
 	data := types.PagedResponse[types.SearchProject]{}
 	return giteeClient.HandleMCPResult(&data)

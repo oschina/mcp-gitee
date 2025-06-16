@@ -3,6 +3,7 @@ package pulls
 import (
 	"context"
 	"fmt"
+
 	"gitee.com/oschina/mcp-gitee/utils"
 
 	"github.com/mark3labs/mcp-go/mcp"
@@ -36,11 +37,12 @@ var CommentPullTool = func() mcp.Tool {
 
 // CommentPullHandleFunc handles the comment pull request operation
 func CommentPullHandleFunc(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-	owner := request.Params.Arguments["owner"].(string)
-	repo := request.Params.Arguments["repo"].(string)
-	body := request.Params.Arguments["body"].(string)
+	args, _ := utils.ConvertArgumentsToMap(request.Params.Arguments)
+	owner := args["owner"].(string)
+	repo := args["repo"].(string)
+	body := args["body"].(string)
 
-	numberArg, exists := request.Params.Arguments["number"]
+	numberArg, exists := args["number"]
 	if !exists {
 		return mcp.NewToolResultError("Missing required parameter: number"),
 			utils.NewParamError("number", "parameter is required")
@@ -60,7 +62,7 @@ func CommentPullHandleFunc(ctx context.Context, request mcp.CallToolRequest) (*m
 	}
 
 	// Create a new Gitee client with the POST method and payload
-	giteeClient := utils.NewGiteeClient("POST", apiUrl, utils.WithPayload(payload))
+	giteeClient := utils.NewGiteeClient("POST", apiUrl, utils.WithContext(ctx), utils.WithPayload(payload))
 
 	// Execute the request and handle the result
 	return giteeClient.HandleMCPResult(nil)

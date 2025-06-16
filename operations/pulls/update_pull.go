@@ -3,6 +3,7 @@ package pulls
 import (
 	"context"
 	"fmt"
+
 	"gitee.com/oschina/mcp-gitee/operations/types"
 	"gitee.com/oschina/mcp-gitee/utils"
 	"github.com/mark3labs/mcp-go/mcp"
@@ -39,9 +40,10 @@ var UpdatePullTool = func() mcp.Tool {
 }()
 
 func UpdatePullHandleFunc(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-	owner := request.Params.Arguments["owner"].(string)
-	repo := request.Params.Arguments["repo"].(string)
-	numberArg, exists := request.Params.Arguments["number"]
+	args, _ := utils.ConvertArgumentsToMap(request.Params.Arguments)
+	owner := args["owner"].(string)
+	repo := args["repo"].(string)
+	numberArg, exists := args["number"]
 	if !exists {
 		return mcp.NewToolResultError("Missing required parameter: number"),
 			utils.NewParamError("number", "parameter is required")
@@ -51,7 +53,7 @@ func UpdatePullHandleFunc(ctx context.Context, request mcp.CallToolRequest) (*mc
 		return mcp.NewToolResultError(err.Error()), err
 	}
 	apiUrl := fmt.Sprintf("/repos/%s/%s/pulls/%d", owner, repo, number)
-	giteeClient := utils.NewGiteeClient("PATCH", apiUrl, utils.WithPayload(request.Params.Arguments))
+	giteeClient := utils.NewGiteeClient("PATCH", apiUrl, utils.WithContext(ctx), utils.WithPayload(args))
 	pull := &types.BasicPull{}
 	return giteeClient.HandleMCPResult(pull)
 }

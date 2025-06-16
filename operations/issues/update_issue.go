@@ -64,19 +64,20 @@ func UpdateIssueHandleFuncCommon(updateType string) func(ctx context.Context, re
 
 		apiUrl := config.UrlTemplate
 		if len(config.PathParams) > 0 {
-			args := make([]interface{}, len(config.PathParams))
-			for i, param := range config.PathParams {
-				value, ok := request.Params.Arguments[param].(string)
+			args, _ := utils.ConvertArgumentsToMap(request.Params.Arguments)
+			apiUrlArgs := make([]interface{}, 0, len(config.PathParams))
+			for _, param := range config.PathParams {
+				value, ok := args[param].(string)
 				if !ok {
 					errMsg := fmt.Sprintf("Missing required path parameter: %s", param)
 					return mcp.NewToolResultError(errMsg), fmt.Errorf(errMsg)
 				}
-				args[i] = value
+				apiUrlArgs = append(apiUrlArgs, value)
 			}
-			apiUrl = fmt.Sprintf(apiUrl, args...)
+			apiUrl = fmt.Sprintf(apiUrl, apiUrlArgs...)
 		}
 
-		giteeClient := utils.NewGiteeClient("PATCH", apiUrl, utils.WithPayload(request.Params.Arguments))
+		giteeClient := utils.NewGiteeClient("PATCH", apiUrl, utils.WithContext(ctx), utils.WithPayload(request.Params.Arguments))
 		issue := &types.BasicIssue{}
 
 		return giteeClient.HandleMCPResult(issue)

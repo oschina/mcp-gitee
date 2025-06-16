@@ -4,8 +4,8 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"github.com/mark3labs/mcp-go/mcp"
 	"log"
+	"net/http"
 	"os"
 	"strings"
 
@@ -15,6 +15,7 @@ import (
 	"gitee.com/oschina/mcp-gitee/operations/repository"
 	"gitee.com/oschina/mcp-gitee/operations/users"
 	"gitee.com/oschina/mcp-gitee/utils"
+	"github.com/mark3labs/mcp-go/mcp"
 
 	"github.com/mark3labs/mcp-go/server"
 )
@@ -26,11 +27,24 @@ var (
 )
 
 func newMCPServer() *server.MCPServer {
+	hooks := &server.Hooks{}
+
+	hooks.OnBeforeCallTool = append(hooks.OnBeforeCallTool, func(ctx context.Context, id any, message *mcp.CallToolRequest) {
+		log.Printf("[tool call] ToolName: %s, Params: %v", message.Params.Name, message.Params.Arguments)
+	})
+
+	hooks.OnAfterCallTool = append(hooks.OnAfterCallTool, func(ctx context.Context, id any, message *mcp.CallToolRequest, result *mcp.CallToolResult) {
+		if result != nil && result.IsError {
+			log.Printf("[tool call error] ToolName: %s, Params: %v, error msg: %v", message.Params.Name, message.Params.Arguments, result.Content)
+		}
+	})
+
 	return server.NewMCPServer(
 		"mcp-gitee",
 		Version,
 		server.WithToolCapabilities(true),
 		server.WithLogging(),
+		server.WithHooks(hooks),
 	)
 }
 
@@ -149,7 +163,7 @@ func run(transport, addr string) error {
 			return err
 		}
 	case "sse":
-		srv := server.NewSSEServer(s, "http://"+addr)
+		srv := server.NewSSEServer(s, server.WithBaseURL(addr))
 		log.Printf("SSE server listening on %s", addr)
 		if err := srv.Start(addr); err != nil {
 			if err == context.Canceled {
@@ -157,9 +171,28 @@ func run(transport, addr string) error {
 			}
 			return fmt.Errorf("server error: %v", err)
 		}
+	case "http":
+		httpServer := server.NewStreamableHTTPServer(s,
+			server.WithStateLess(true),
+			server.WithHTTPContextFunc(func(ctx context.Context, r *http.Request) context.Context {
+				auth := r.Header.Get("Authorization")
+				if len(auth) > 7 && auth[:7] == "Bearer " {
+					token := auth[7:]
+					ctx = context.WithValue(ctx, "access_token", token)
+				}
+				return ctx
+			}),
+		)
+		log.Printf("SSE server listening on %s", addr)
+		if err := httpServer.Start(addr); err != nil {
+			if err == context.Canceled {
+				return nil
+			}
+			return fmt.Errorf("server error: %v", err)
+		}
 	default:
 		return fmt.Errorf(
-			"invalid transport type: %s. Must be 'stdio' or 'sse'",
+			"invalid transport type: %s. Must be 'stdio'、'sse' or 'http'",
 			transport,
 		)
 	}
@@ -171,7 +204,7 @@ func main() {
 	apiBase := flag.String("api-base", "", "Gitee API base URL (default: https://gitee.com/api/v5)")
 	showVersion := flag.Bool("version", false, "Show version information")
 	transport := flag.String("transport", "stdio", "Transport type (stdio or sse)")
-	addr := flag.String("sse-address", "localhost:8000", "The host and port to start the sse server on")
+	addr := flag.String("address", "localhost:8000", "The host and port to start the sse/http server on")
 	flag.StringVar(&disabledToolsetsFlag, "disabled-toolsets", "", "Comma-separated list of tools to disable")
 	flag.StringVar(&enabledToolsetsFlag, "enabled-toolsets", "", "Comma-separated list of tools to enable (if specified, only these tools will be available)")
 	flag.Parse()

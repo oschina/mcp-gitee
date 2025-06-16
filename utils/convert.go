@@ -44,3 +44,16 @@ func SafelyConvertToInt(value interface{}) (int, error) {
 		return 0, NewParamError("number", fmt.Sprintf("unsupported type: %v", reflect.TypeOf(value)))
 	}
 }
+
+// ConvertArgumentsToMap 将 any 类型的参数安全转换为 map[string]interface{}
+func ConvertArgumentsToMap(arguments any) (map[string]interface{}, error) {
+	if arguments == nil {
+		return make(map[string]interface{}), nil
+	}
+
+	if argMap, ok := arguments.(map[string]interface{}); ok {
+		return argMap, nil
+	}
+
+	return nil, NewParamError("arguments", "arguments must be a map[string]interface{}")
+}

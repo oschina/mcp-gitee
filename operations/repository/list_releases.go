@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"fmt"
+
 	"gitee.com/oschina/mcp-gitee/operations/types"
 	"gitee.com/oschina/mcp-gitee/utils"
 	"github.com/mark3labs/mcp-go/mcp"
@@ -43,12 +44,13 @@ var ListReleasesTool = mcp.NewTool(
 )
 
 func ListReleasesHandleFunc(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-	owner := request.Params.Arguments["owner"].(string)
-	repo := request.Params.Arguments["repo"].(string)
+	args, _ := utils.ConvertArgumentsToMap(request.Params.Arguments)
+	owner := args["owner"].(string)
+	repo := args["repo"].(string)
 
 	apiUrl := fmt.Sprintf("/repos/%s/%s/releases", owner, repo)
 
-	giteeClient := utils.NewGiteeClient("GET", apiUrl, utils.WithPayload(request.Params.Arguments))
+	giteeClient := utils.NewGiteeClient("GET", apiUrl, utils.WithContext(ctx), utils.WithPayload(args))
 
 	releases := make([]types.Release, 0)
 	return giteeClient.HandleMCPResult(&releases)

@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+
 	"gitee.com/oschina/mcp-gitee/operations/types"
 	"gitee.com/oschina/mcp-gitee/utils"
 	"github.com/mark3labs/mcp-go/mcp"
@@ -60,7 +61,8 @@ var ListUserReposTool = mcp.NewTool(
 
 func ListUserReposHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 	apiUrl := "/user/repos"
-	giteeClient := utils.NewGiteeClient("GET", apiUrl, utils.WithQuery(request.Params.Arguments))
+	args, _ := utils.ConvertArgumentsToMap(request.Params.Arguments)
+	giteeClient := utils.NewGiteeClient("GET", apiUrl, utils.WithContext(ctx), utils.WithQuery(args))
 
 	repositories := make([]types.Project, 0)
 	return giteeClient.HandleMCPResult(&repositories)

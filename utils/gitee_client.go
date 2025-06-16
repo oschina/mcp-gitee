@@ -2,17 +2,19 @@ package utils
 
 import (
 	"bytes"
+	"context"
 	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
-	"gitee.com/oschina/mcp-gitee/operations/types"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
 	"runtime"
 	"strconv"
+
+	"gitee.com/oschina/mcp-gitee/operations/types"
 
 	"github.com/mark3labs/mcp-go/mcp"
 )
@@ -60,6 +62,7 @@ type GiteeClient struct {
 	parsedUrl *url.URL
 	Query     map[string]string
 	SkipAuth  bool
+	Ctx       context.Context
 }
 
 type Option func(client *GiteeClient)
@@ -79,6 +82,7 @@ func NewGiteeClient(method, urlString string, opts ...Option) *GiteeClient {
 		Method:    method,
 		Url:       parsedUrl.String(),
 		parsedUrl: parsedUrl,
+		Ctx:       context.Background(),
 	}
 
 	for _, opt := range opts {
@@ -150,7 +154,17 @@ func (g *GiteeClient) Do() (*GiteeClient, error) {
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("User-Agent", "mcp-gitee "+Version+" Go/"+runtime.GOOS+"/"+runtime.GOARCH+"/"+runtime.Version())
 
-	accessToken := GetGiteeAccessToken()
+	accessToken := ""
+	if g.Ctx != nil {
+		if v := g.Ctx.Value("access_token"); v != nil {
+			if s, ok := v.(string); ok && s != "" {
+				accessToken = s
+			}
+		}
+	}
+	if accessToken == "" {
+		accessToken = GetGiteeAccessToken()
+	}
 	if accessToken == "" && !g.SkipAuth {
 		return nil, NewAuthError()
 	}
@@ -169,7 +183,6 @@ func (g *GiteeClient) Do() (*GiteeClient, error) {
 
 	g.Response = resp
 
-	// 检查响应状态码
 	if !g.IsSuccess() {
 		body, _ := ioutil.ReadAll(resp.Body)
 		return g, NewAPIError(resp.StatusCode, body)
@@ -221,7 +234,6 @@ func (g *GiteeClient) HandleMCPResult(object any) (*mcp.CallToolResult, error) {
 		}
 	}
 
-	// Handle no content case when object is nil
 	if object == nil {
 		return mcp.NewToolResultText("Operation completed successfully"), nil
 	}
@@ -229,7 +241,7 @@ func (g *GiteeClient) HandleMCPResult(object any) (*mcp.CallToolResult, error) {
 	body, err := g.GetRespBody()
 	if err != nil {
 		return mcp.NewToolResultError(fmt.Sprintf("Failed to read response body: %s", err.Error())),
-			NewInternalError(err)
+			NewInternalError(errors.New(err.Error()))
 	}
 
 	if err = json.Unmarshal(body, object); err != nil {
@@ -237,7 +249,6 @@ func (g *GiteeClient) HandleMCPResult(object any) (*mcp.CallToolResult, error) {
 		return mcp.NewToolResultError(errorMessage), NewInternalError(errors.New(errorMessage))
 	}
 
-	// decode file base64 content
 	switch v := object.(type) {
 	case *[]types.FileContent:
 		for i := range *v {
@@ -266,4 +277,12 @@ func (g *GiteeClient) HandleMCPResult(object any) (*mcp.CallToolResult, error) {
 	}
 
 	return mcp.NewToolResultText(string(result)), nil
+}
+
+func WithContext(ctx context.Context) Option {
+	return func(client *GiteeClient) {
+		if ctx != nil {
+			client.Ctx = ctx
+		}
+	}
 }

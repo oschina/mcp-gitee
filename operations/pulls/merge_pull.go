@@ -3,6 +3,7 @@ package pulls
 import (
 	"context"
 	"fmt"
+
 	"gitee.com/oschina/mcp-gitee/utils"
 	"github.com/mark3labs/mcp-go/mcp"
 )
@@ -50,10 +51,11 @@ var MergePullTool = func() mcp.Tool {
 }()
 
 func MergePullHandleFunc(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-	owner := request.Params.Arguments["owner"].(string)
-	repo := request.Params.Arguments["repo"].(string)
+	args, _ := utils.ConvertArgumentsToMap(request.Params.Arguments)
+	owner := args["owner"].(string)
+	repo := args["repo"].(string)
 
-	numberArg, exists := request.Params.Arguments["number"]
+	numberArg, exists := args["number"]
 	if !exists {
 		return mcp.NewToolResultError("Missing required parameter: number"),
 			utils.NewParamError("number", "parameter is required")
@@ -65,6 +67,6 @@ func MergePullHandleFunc(ctx context.Context, request mcp.CallToolRequest) (*mcp
 	}
 
 	apiUrl := fmt.Sprintf("/repos/%s/%s/pulls/%d/merge", owner, repo, number)
-	giteeClient := utils.NewGiteeClient("PUT", apiUrl, utils.WithPayload(request.Params.Arguments))
+	giteeClient := utils.NewGiteeClient("PUT", apiUrl, utils.WithContext(ctx), utils.WithPayload(args))
 	return giteeClient.HandleMCPResult(nil)
 }

@@ -3,6 +3,7 @@ package issues
 import (
 	"context"
 	"fmt"
+
 	"gitee.com/oschina/mcp-gitee/operations/types"
 	"gitee.com/oschina/mcp-gitee/utils"
 	"github.com/mark3labs/mcp-go/mcp"
@@ -82,27 +83,28 @@ func GetIssueDetailHandleFunc(getType string) server.ToolHandlerFunc {
 			return mcp.NewToolResultError(errMsg), fmt.Errorf(errMsg)
 		}
 
+		args, _ := utils.ConvertArgumentsToMap(request.Params.Arguments)
 		apiUrl := config.UrlTemplate
 		if len(config.PathParams) > 0 {
-			args := make([]interface{}, len(config.PathParams))
-			for i, param := range config.PathParams {
-				value, ok := request.Params.Arguments[param].(string)
+			apiUrlArgs := make([]interface{}, len(config.PathParams))
+			for idx, param := range config.PathParams {
+				value, ok := args[param].(string)
 				if !ok {
 					errMsg := fmt.Sprintf("missing required path parameter: %s", param)
 					return mcp.NewToolResultError(errMsg), fmt.Errorf(errMsg)
 				}
-				args[i] = value
+				apiUrlArgs[idx] = value
 			}
-			apiUrl = fmt.Sprintf(apiUrl, args...)
+			apiUrl = fmt.Sprintf(apiUrl, apiUrlArgs...)
 		}
 
 		// Handle optional query parameters
 		queryParams := make(map[string]interface{})
-		if accessToken, ok := request.Params.Arguments["access_token"]; ok && accessToken != "" {
+		if accessToken, ok := args["access_token"]; ok && accessToken != "" {
 			queryParams["access_token"] = accessToken
 		}
 
-		giteeClient := utils.NewGiteeClient("GET", apiUrl, utils.WithQuery(queryParams))
+		giteeClient := utils.NewGiteeClient("GET", apiUrl, utils.WithContext(ctx), utils.WithQuery(queryParams))
 
 		// 使用 HandleMCPResult 方法简化处理逻辑
 		issue := &types.BasicIssue{}

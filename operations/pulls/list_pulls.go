@@ -116,20 +116,21 @@ func ListPullsHandleFunc(listType string) server.ToolHandlerFunc {
 			return mcp.NewToolResultError(errMsg), fmt.Errorf(errMsg)
 		}
 
+		args, _ := utils.ConvertArgumentsToMap(request.Params.Arguments)
 		apiUrl := config.UrlTemplate
 		if len(config.PathParams) > 0 {
-			args := make([]interface{}, len(config.PathParams))
+			apiUrlArgs := make([]interface{}, len(config.PathParams))
 			for i, param := range config.PathParams {
-				value, ok := request.Params.Arguments[param].(string)
+				value, ok := args[param].(string)
 				if !ok {
 					return nil, fmt.Errorf("missing required path parameter: %s", param)
 				}
-				args[i] = value
+				apiUrlArgs[i] = value
 			}
-			apiUrl = fmt.Sprintf(apiUrl, args...)
+			apiUrl = fmt.Sprintf(apiUrl, apiUrlArgs...)
 		}
 
-		giteeClient := utils.NewGiteeClient("GET", apiUrl, utils.WithQuery(request.Params.Arguments))
+		giteeClient := utils.NewGiteeClient("GET", apiUrl, utils.WithContext(ctx), utils.WithQuery(args))
 		pulls := make([]types.BasicPull, 0)
 		return giteeClient.HandleMCPResult(&pulls)
 	}

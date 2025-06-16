@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"fmt"
+
 	"gitee.com/oschina/mcp-gitee/operations/types"
 	"gitee.com/oschina/mcp-gitee/utils"
 	"github.com/mark3labs/mcp-go/mcp"
@@ -53,16 +54,16 @@ var CreateReleaseTool = mcp.NewTool(
 )
 
 func CreateReleaseHandleFunc(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-
-	if checkResult, err := utils.CheckRequired(request.Params.Arguments, "owner", "repo"); err != nil {
+	args, _ := utils.ConvertArgumentsToMap(request.Params.Arguments)
+	if checkResult, err := utils.CheckRequired(args, "owner", "repo"); err != nil {
 		return checkResult, err
 	}
 
-	owner := request.Params.Arguments["owner"].(string)
-	repo := request.Params.Arguments["repo"].(string)
+	owner := args["owner"].(string)
+	repo := args["repo"].(string)
 	apiUrl := fmt.Sprintf("/repos/%s/%s/releases", owner, repo)
 
-	giteeClient := utils.NewGiteeClient("POST", apiUrl, utils.WithPayload(request.Params.Arguments))
+	giteeClient := utils.NewGiteeClient("POST", apiUrl, utils.WithContext(ctx), utils.WithPayload(args))
 
 	release := &types.Release{}
 	return giteeClient.HandleMCPResult(release)

@@ -3,6 +3,7 @@ package pulls
 import (
 	"context"
 	"fmt"
+
 	"gitee.com/oschina/mcp-gitee/operations/types"
 	"gitee.com/oschina/mcp-gitee/utils"
 	"github.com/mark3labs/mcp-go/mcp"
@@ -43,10 +44,11 @@ var CreatePullTool = func() mcp.Tool {
 }()
 
 func CreatePullHandleFunc(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-	owner := request.Params.Arguments["owner"].(string)
-	repo := request.Params.Arguments["repo"].(string)
+	args, _ := request.Params.Arguments.(map[string]interface{})
+	owner := args["owner"].(string)
+	repo := args["repo"].(string)
 	apiUrl := fmt.Sprintf("/repos/%s/%s/pulls", owner, repo)
-	giteeClient := utils.NewGiteeClient("POST", apiUrl, utils.WithPayload(request.Params.Arguments))
+	giteeClient := utils.NewGiteeClient("POST", apiUrl, utils.WithContext(ctx), utils.WithPayload(args))
 	pull := &types.BasicPull{}
 	return giteeClient.HandleMCPResult(pull)
 }

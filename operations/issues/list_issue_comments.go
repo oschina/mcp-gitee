@@ -3,10 +3,11 @@ package issues
 import (
 	"context"
 	"fmt"
+	"strconv"
+
 	"gitee.com/oschina/mcp-gitee/operations/types"
 	"gitee.com/oschina/mcp-gitee/utils"
 	"github.com/mark3labs/mcp-go/mcp"
-	"strconv"
 )
 
 const (
@@ -57,9 +58,10 @@ var ListIssueCommentsTool = func() mcp.Tool {
 // ListIssueCommentsHandleFunc handles the request to list issue comments
 func ListIssueCommentsHandleFunc(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 	// Extract required parameters from the request
-	owner := request.Params.Arguments["owner"].(string)
-	repo := request.Params.Arguments["repo"].(string)
-	number := request.Params.Arguments["number"].(string)
+	args, _ := utils.ConvertArgumentsToMap(request.Params.Arguments)
+	owner := args["owner"].(string)
+	repo := args["repo"].(string)
+	number := args["number"].(string)
 
 	// Construct the API URL for listing issue comments
 	apiUrl := fmt.Sprintf("/repos/%s/%s/issues/%s/comments", owner, repo, number)
@@ -68,24 +70,24 @@ func ListIssueCommentsHandleFunc(ctx context.Context, request mcp.CallToolReques
 	query := make(map[string]interface{})
 
 	// Add optional parameters if they exist
-	if since, ok := request.Params.Arguments["since"].(string); ok && since != "" {
+	if since, ok := args["since"].(string); ok && since != "" {
 		query["since"] = since
 	}
 
-	if page, ok := request.Params.Arguments["page"].(float64); ok {
+	if page, ok := args["page"].(float64); ok {
 		query["page"] = strconv.Itoa(int(page))
 	}
 
-	if perPage, ok := request.Params.Arguments["per_page"].(float64); ok {
+	if perPage, ok := args["per_page"].(float64); ok {
 		query["per_page"] = strconv.Itoa(int(perPage))
 	}
 
-	if order, ok := request.Params.Arguments["order"].(string); ok && order != "" {
+	if order, ok := args["order"].(string); ok && order != "" {
 		query["order"] = order
 	}
 
 	// Create a new Gitee client with the GET method and the constructed API URL
-	giteeClient := utils.NewGiteeClient("GET", apiUrl, utils.WithQuery(query))
+	giteeClient := utils.NewGiteeClient("GET", apiUrl, utils.WithContext(ctx), utils.WithQuery(query))
 
 	// Define the response structure
 	var comments []types.IssueComment
