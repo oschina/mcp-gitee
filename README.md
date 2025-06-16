@@ -100,13 +100,27 @@ config example: [Click to view more application configuration](./docs/install/)
 }
 ```
 
+- Streamable HTTP
+```json
+{
+  "mcpServers": {
+    "gitee": {
+      "url": "http://{host}:{port}/mcp",
+      "headers": {
+        "Authorization": "Bearer <your_personal_access_token>"
+      }
+    }
+  }
+}
+```
+
 ### Command-line Options
 
 - `--token`: Gitee access token
 - `--api-base`: Gitee API base URL (default: https://gitee.com/api/v5)
 - `--version`: Show version information
-- `--transport`: Transport type (stdio or sse, default: stdio)
-- `--sse-address`: The host and port to start the SSE server on (default: localhost:8000)
+- `--transport`: Transport type (stdio、sse or http, default: stdio)
+- `--address`: The host and port to start the SSE server on (default: localhost:8000)
 - `--enabled-toolsets`: Comma-separated list of tools to enable (if specified, only these tools will be enabled)
 - `--disabled-toolsets`: Comma-separated list of tools to disable
 

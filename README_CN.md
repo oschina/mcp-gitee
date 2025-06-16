@@ -101,13 +101,27 @@ mcp-gitee --version
 }
 ```
 
+- Streamable HTTP 启动
+```json
+{
+  "mcpServers": {
+    "gitee": {
+      "url": "http://{host}:{port}/mcp",
+      "headers": {
+        "Authorization": "Bearer <your_personal_access_token>"
+      }
+    }
+  }
+}
+```
+
 ### 命令行选项
 
 - `--token`：Gitee 访问令牌
 - `--api-base`：Gitee API 基础 URL（默认：https://gitee.com/api/v5）
 - `--version`：显示版本信息
-- `--transport`：传输类型（stdio 或 sse，默认：stdio）
-- `--sse-address`：启动 SSE 服务器的主机和端口（默认：localhost:8000）
+- `--transport`：传输类型（stdio、sse 或 http，默认：stdio）
+- `--address`：启动 SSE 服务器的主机和端口（默认：localhost:8000）
 - `--enabled-toolsets`: 逗号分隔的要启用的工具列表（如果指定，则只启用这些工具）
 - `--disabled-toolsets`: 逗号分隔的要禁用的工具列表
 
