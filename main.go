@@ -183,7 +183,7 @@ func run(transport, addr string) error {
 				return ctx
 			}),
 		)
-		log.Printf("SSE server listening on %s", addr)
+		log.Printf("HTTP server listening on %s", addr)
 		if err := httpServer.Start(addr); err != nil {
 			if err == context.Canceled {
 				return nil

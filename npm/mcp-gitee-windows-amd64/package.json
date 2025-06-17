@@ -1,6 +1,6 @@
 {
   "name": "@gitee/mcp-gitee-windows-amd64",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "Model Context Protocol (MCP) server for Gitee",
   "os": [
     "win32"
