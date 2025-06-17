@@ -120,7 +120,7 @@ config example: [Click to view more application configuration](./docs/install/)
 - `--api-base`: Gitee API base URL (default: https://gitee.com/api/v5)
 - `--version`: Show version information
 - `--transport`: Transport type (stdio、sse or http, default: stdio)
-- `--address`: The host and port to start the SSE server on (default: localhost:8000)
+- `--address`: The host and port to start the server on (default: localhost:8000)
 - `--enabled-toolsets`: Comma-separated list of tools to enable (if specified, only these tools will be enabled)
 - `--disabled-toolsets`: Comma-separated list of tools to disable
 

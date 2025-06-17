@@ -121,7 +121,7 @@ mcp-gitee --version
 - `--api-base`：Gitee API 基础 URL（默认：https://gitee.com/api/v5）
 - `--version`：显示版本信息
 - `--transport`：传输类型（stdio、sse 或 http，默认：stdio）
-- `--address`：启动 SSE 服务器的主机和端口（默认：localhost:8000）
+- `--address`：启动服务器的主机和端口（默认：localhost:8000）
 - `--enabled-toolsets`: 逗号分隔的要启用的工具列表（如果指定，则只启用这些工具）
 - `--disabled-toolsets`: 逗号分隔的要禁用的工具列表
 
