@@ -67,6 +67,20 @@ mcp-gitee --version
 </div>
 
 config example: [Click to view more application configuration](./docs/install/)
+- Connect to the official remote mcp-gitee server (no installation required)
+```json
+{
+  "mcpServers": {
+    "gitee": {
+      "url": "http://api.gitee.com/mcp",
+      "headers": {
+        "Authorization": "Bearer <your personal access token>"
+      }
+    }
+  }
+}
+```
+
 - npx
 ```json
 {
@@ -94,20 +108,6 @@ config example: [Click to view more application configuration](./docs/install/)
       "env": {
         "GITEE_API_BASE": "https://gitee.com/api/v5",
         "GITEE_ACCESS_TOKEN": "<your personal access token>"
-      }
-    }
-  }
-}
-```
-
-- Streamable HTTP
-```json
-{
-  "mcpServers": {
-    "gitee": {
-      "url": "http://{host}:{port}/mcp",
-      "headers": {
-        "Authorization": "Bearer <your_personal_access_token>"
       }
     }
   }

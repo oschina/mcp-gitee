@@ -68,6 +68,20 @@ mcp-gitee --version
 </div>
 
 配置示例：[点击查看更多应用配置](./docs/install/)
+- 连接官方 remote mcp-gitee server（免安装）
+```json
+{
+  "mcpServers": {
+    "gitee": {
+      "url": "http://api.gitee.com/mcp",
+      "headers": {
+        "Authorization": "Bearer <your personal access token>"
+      }
+    }
+  }
+}
+```
+
 - npx 启动
 ```json
 {
@@ -95,20 +109,6 @@ mcp-gitee --version
       "env": {
         "GITEE_API_BASE": "https://gitee.com/api/v5",
         "GITEE_ACCESS_TOKEN": "<your personal access token>"
-      }
-    }
-  }
-}
-```
-
-- Streamable HTTP 启动
-```json
-{
-  "mcpServers": {
-    "gitee": {
-      "url": "http://{host}:{port}/mcp",
-      "headers": {
-        "Authorization": "Bearer <your_personal_access_token>"
       }
     }
   }
