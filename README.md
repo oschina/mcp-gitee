@@ -72,7 +72,7 @@ config example: [Click to view more application configuration](./docs/install/)
 {
   "mcpServers": {
     "gitee": {
-      "url": "http://api.gitee.com/mcp",
+      "url": "https://api.gitee.com/mcp",
       "headers": {
         "Authorization": "Bearer <your personal access token>"
       }
