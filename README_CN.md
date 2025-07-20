@@ -178,6 +178,7 @@ mcp-gitee --version
 | **get_pull_detail**         | Pull Request | 获取拉取请求的详细信息      |
 | **comment_pull**            | Pull Request | 评论拉取请求           |
 | **list_pull_comments**      | Pull Request | 列出拉取请求的所有评论      |
+| **get_diff_files**          | Pull Request | 获取拉取请求的差异文件      |
 | **create_issue**            | Issue        | 创建 Issue         |
 | **update_issue**            | Issue        | 更新 Issue         |
 | **get_repo_issue_detail**   | Issue        | 获取仓库 Issue 的详细信息 |

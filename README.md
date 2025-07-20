@@ -177,6 +177,7 @@ The server provides various tools for interacting with Gitee:
 | **get_pull_detail**                 | Pull Request | Get details of a pull request |
 | **comment_pull**                    | Pull Request | Comment on a pull request |
 | **list_pull_comments**              | Pull Request | List all comments for a pull request |
+| **get_diff_files**                  | Pull Request | Get a pull request diff files |
 | **create_issue**                    | Issue | Create an issue |
 | **update_issue**                    | Issue | Update an issue |
 | **get_repo_issue_detail**           | Issue | Get details of a repository issue |
