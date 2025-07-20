@@ -50,3 +50,28 @@ type PullComment struct {
 	InReplyToId      int       `json:"in_reply_to_id"`
 	Url              string    `json:"url"`
 }
+
+// DiffFile defines the structure for a pull request diff file
+type DiffFile struct {
+	Sha       string    `json:"sha"`
+	Filename  string    `json:"filename"`
+	Status    *string   `json:"status"`
+	Additions string    `json:"additions"`
+	Deletions string    `json:"deletions"`
+	BlobUrl   string    `json:"blob_url"`
+	RawUrl    string    `json:"raw_url"`
+	Patch     PatchInfo `json:"patch"`
+}
+
+// PatchInfo defines the structure for patch information
+type PatchInfo struct {
+	Diff        string `json:"diff"`
+	NewPath     string `json:"new_path"`
+	OldPath     string `json:"old_path"`
+	AMode       string `json:"a_mode"`
+	BMode       string `json:"b_mode"`
+	NewFile     bool   `json:"new_file"`
+	RenamedFile bool   `json:"renamed_file"`
+	DeletedFile bool   `json:"deleted_file"`
+	TooLarge    bool   `json:"too_large"`
+}

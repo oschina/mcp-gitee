@@ -101,6 +101,7 @@ func addTools(s *server.MCPServer) {
 	addTool(s, pulls.CommentPullTool, pulls.CommentPullHandleFunc)
 	addTool(s, pulls.MergePullTool, pulls.MergePullHandleFunc)
 	addTool(s, pulls.ListPullCommentsTool, pulls.ListPullCommentsHandleFunc)
+	addTool(s, pulls.GetDiffFilesTool, pulls.GetDiffFilesHandleFunc)
 
 	// Issues Tools
 	addTool(s, issues.CreateIssueTool, issues.CreateIssueHandleFunc)
