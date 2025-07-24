@@ -1,18 +1,18 @@
 {
   "name": "@gitee/mcp-gitee",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "Model Context Protocol (MCP) server for Gitee",
   "main": "./bin/index.js",
   "bin": {
     "mcp-gitee": "bin/index.js"
   },
   "optionalDependencies": {
-    "@gitee/mcp-gitee-darwin-amd64": "0.1.12",
-    "@gitee/mcp-gitee-darwin-arm64": "0.1.12",
-    "@gitee/mcp-gitee-linux-amd64": "0.1.12",
-    "@gitee/mcp-gitee-linux-arm64": "0.1.12",
-    "@gitee/mcp-gitee-windows-amd64": "0.1.12",
-    "@gitee/mcp-gitee-windows-arm64": "0.1.12"
+    "@gitee/mcp-gitee-darwin-amd64": "0.1.13",
+    "@gitee/mcp-gitee-darwin-arm64": "0.1.13",
+    "@gitee/mcp-gitee-linux-amd64": "0.1.13",
+    "@gitee/mcp-gitee-linux-arm64": "0.1.13",
+    "@gitee/mcp-gitee-windows-amd64": "0.1.13",
+    "@gitee/mcp-gitee-windows-arm64": "0.1.13"
   },
   "repository": {
     "type": "git",

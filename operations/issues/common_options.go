@@ -49,4 +49,9 @@ var BasicIssueOptions = []mcp.ToolOption{
 		"program",
 		mcp.Description("Project ID"),
 	),
+	mcp.WithBoolean(
+		"security_hole",
+		mcp.Description("Set as a private issue (default is false)"),
+		mcp.DefaultBool(false),
+	),
 }
