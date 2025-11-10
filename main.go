@@ -85,6 +85,7 @@ func addTools(s *server.MCPServer) {
 	// Repository Tools
 	addTool(s, repository.ListUserReposTool, repository.ListUserReposHandler)
 	addTool(s, repository.GetFileContentTool, repository.GetFileContentHandler)
+	addTool(s, repository.SearchFilesByContentTool, repository.SearchFilesByContentHandler)
 	addTool(s, repository.NewCreateRepoTool(repository.CreateUserRepo), repository.CreateRepoHandleFunc(repository.CreateUserRepo))
 	addTool(s, repository.NewCreateRepoTool(repository.CreateOrgRepo), repository.CreateRepoHandleFunc(repository.CreateOrgRepo))
 	addTool(s, repository.NewCreateRepoTool(repository.CreateEnterRepo), repository.CreateRepoHandleFunc(repository.CreateEnterRepo))

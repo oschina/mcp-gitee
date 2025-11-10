@@ -1,6 +1,6 @@
 module gitee.com/oschina/mcp-gitee
 
-go 1.23.0
+go 1.25.4
 
 require github.com/mark3labs/mcp-go v0.32.0
 

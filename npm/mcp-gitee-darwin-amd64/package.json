@@ -1,6 +1,6 @@
 {
   "name": "@gitee/mcp-gitee-darwin-amd64",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "description": "Model Context Protocol (MCP) server for Gitee",
   "os": [
     "darwin"
