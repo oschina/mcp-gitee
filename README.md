@@ -170,6 +170,7 @@ The server provides various tools for interacting with Gitee:
 | **create_release**                  | Repository | Create a release for a repository |
 | **list_releases**                   | Repository | List repository releases |
 | **search_open_source_repositories** | Repository | Search open source repositories on Gitee |
+| **search_files_by_content**         | Repository | Search files by Content |
 | **list_repo_pulls**                 | Pull Request | List pull requests in a repository |
 | **merge_pull**                      | Pull Request | Merge a pull request |
 | **create_pull**                     | Pull Request | Create a pull request |

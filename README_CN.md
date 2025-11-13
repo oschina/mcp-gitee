@@ -171,6 +171,7 @@ mcp-gitee --version
 | **create_release**          | 仓库           | 为仓库创建发行版         |
 | **list_releases**           | 仓库           | 列出仓库发行版          |
 | **search_open_source_repositories** | 仓库           | 搜索开源仓库           |
+| **search_files_by_content** | 仓库           | 按内容搜索仓库文件        |
 | **list_repo_pulls**         | Pull Request | 列出仓库中的拉取请求       |
 | **merge_pull**              | Pull Request | 合并拉取请求           |
 | **create_pull**             | Pull Request | 创建拉取请求           |
