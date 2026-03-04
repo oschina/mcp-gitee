@@ -171,6 +171,7 @@ The server provides various tools for interacting with Gitee:
 | **list_releases**                   | Repository | List repository releases |
 | **search_open_source_repositories** | Repository | Search open source repositories on Gitee |
 | **search_files_by_content**         | Repository | Search files by Content |
+| **compare_branches_tags**           | Repository | Compare two branches, tags, or commits in a repository |
 | **list_repo_pulls**                 | Pull Request | List pull requests in a repository |
 | **merge_pull**                      | Pull Request | Merge a pull request |
 | **create_pull**                     | Pull Request | Create a pull request |
@@ -179,6 +180,8 @@ The server provides various tools for interacting with Gitee:
 | **comment_pull**                    | Pull Request | Comment on a pull request |
 | **list_pull_comments**              | Pull Request | List all comments for a pull request |
 | **get_diff_files**                  | Pull Request | Get a pull request diff files |
+| **approve_pull_review**             | Pull Request | Approve a pull request review |
+| **cancel_pull_review**              | Pull Request | Reset the review status of a pull request |
 | **create_issue**                    | Issue | Create an issue |
 | **update_issue**                    | Issue | Update an issue |
 | **get_repo_issue_detail**           | Issue | Get details of a repository issue |

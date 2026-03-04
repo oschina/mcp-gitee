@@ -172,6 +172,7 @@ mcp-gitee --version
 | **list_releases**           | 仓库           | 列出仓库发行版          |
 | **search_open_source_repositories** | 仓库           | 搜索开源仓库           |
 | **search_files_by_content** | 仓库           | 按内容搜索仓库文件        |
+| **compare_branches_tags**   | 仓库           | 对比两个分支、Tag 或提交的差异 |
 | **list_repo_pulls**         | Pull Request | 列出仓库中的拉取请求       |
 | **merge_pull**              | Pull Request | 合并拉取请求           |
 | **create_pull**             | Pull Request | 创建拉取请求           |
@@ -180,6 +181,8 @@ mcp-gitee --version
 | **comment_pull**            | Pull Request | 评论拉取请求           |
 | **list_pull_comments**      | Pull Request | 列出拉取请求的所有评论      |
 | **get_diff_files**          | Pull Request | 获取拉取请求的差异文件      |
+| **approve_pull_review**     | Pull Request | 审查通过拉取请求           |
+| **cancel_pull_review**      | Pull Request | 重置拉取请求的审查状态        |
 | **create_issue**            | Issue        | 创建 Issue         |
 | **update_issue**            | Issue        | 更新 Issue         |
 | **get_repo_issue_detail**   | Issue        | 获取仓库 Issue 的详细信息 |

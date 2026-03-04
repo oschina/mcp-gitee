@@ -93,6 +93,7 @@ func addTools(s *server.MCPServer) {
 	addTool(s, repository.ListReleasesTool, repository.ListReleasesHandleFunc)
 	addTool(s, repository.SearchReposTool, repository.SearchOpenSourceReposHandler)
 	addTool(s, repository.ForkRepositoryTool, repository.ForkRepositoryHandler)
+	addTool(s, repository.CompareRefsTool, repository.CompareRefsHandler)
 
 	// Pulls Tools
 	addTool(s, pulls.NewListPullsTool(pulls.ListRepoPullsToolName), pulls.ListPullsHandleFunc(pulls.ListRepoPullsToolName))
@@ -103,6 +104,8 @@ func addTools(s *server.MCPServer) {
 	addTool(s, pulls.MergePullTool, pulls.MergePullHandleFunc)
 	addTool(s, pulls.ListPullCommentsTool, pulls.ListPullCommentsHandleFunc)
 	addTool(s, pulls.GetDiffFilesTool, pulls.GetDiffFilesHandleFunc)
+	addTool(s, pulls.ApprovePullReviewTool, pulls.ApprovePullReviewHandleFunc)
+	addTool(s, pulls.CancelPullReviewTool, pulls.CancelPullReviewHandleFunc)
 
 	// Issues Tools
 	addTool(s, issues.CreateIssueTool, issues.CreateIssueHandleFunc)
