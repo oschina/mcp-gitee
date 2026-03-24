@@ -270,7 +270,7 @@ func (g *GiteeClient) HandleMCPResult(object any) (*mcp.CallToolResult, error) {
 		object = v
 	}
 
-	result, err := json.MarshalIndent(object, "", "  ")
+	result, err := json.Marshal(object)
 	if err != nil {
 		return mcp.NewToolResultError(fmt.Sprintf("Failed to format response: %s", err.Error())),
 			NewInternalError(err)
