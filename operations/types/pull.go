@@ -1,5 +1,7 @@
 package types
 
+import "encoding/json"
+
 type BasicPull struct {
 	Id              int        `json:"id"`
 	Title           string     `json:"title"`
@@ -19,6 +21,22 @@ type BasicPull struct {
 	Base            Reference  `json:"base"`
 	CanMergeCheck   bool       `json:"can_merge_check"`
 	Draft           bool       `json:"draft"`
+	IsConflict      bool       `json:"is_conflict"`
+}
+
+func (p *BasicPull) UnmarshalJSON(data []byte) error {
+	type Alias BasicPull
+	aux := &struct {
+		*Alias
+		Mergeable bool `json:"mergeable"`
+	}{
+		Alias: (*Alias)(p),
+	}
+	if err := json.Unmarshal(data, aux); err != nil {
+		return err
+	}
+	p.IsConflict = !aux.Mergeable
+	return nil
 }
 
 type Reference struct {
