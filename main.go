@@ -9,6 +9,7 @@ import (
 	"os"
 	"strings"
 
+	"gitee.com/oschina/mcp-gitee/operations/comments"
 	"gitee.com/oschina/mcp-gitee/operations/issues"
 	"gitee.com/oschina/mcp-gitee/operations/notifications"
 	"gitee.com/oschina/mcp-gitee/operations/pulls"
@@ -86,9 +87,7 @@ func addTools(s *server.MCPServer) {
 	addTool(s, repository.ListUserReposTool, repository.ListUserReposHandler)
 	addTool(s, repository.GetFileContentTool, repository.GetFileContentHandler)
 	addTool(s, repository.SearchFilesByContentTool, repository.SearchFilesByContentHandler)
-	addTool(s, repository.NewCreateRepoTool(repository.CreateUserRepo), repository.CreateRepoHandleFunc(repository.CreateUserRepo))
-	addTool(s, repository.NewCreateRepoTool(repository.CreateOrgRepo), repository.CreateRepoHandleFunc(repository.CreateOrgRepo))
-	addTool(s, repository.NewCreateRepoTool(repository.CreateEnterRepo), repository.CreateRepoHandleFunc(repository.CreateEnterRepo))
+	addTool(s, repository.CreateRepoTool, repository.CreateRepoHandleFunc)
 	addTool(s, repository.CreateReleaseTool, repository.CreateReleaseHandleFunc)
 	addTool(s, repository.ListReleasesTool, repository.ListReleasesHandleFunc)
 	addTool(s, repository.SearchReposTool, repository.SearchOpenSourceReposHandler)
@@ -100,20 +99,19 @@ func addTools(s *server.MCPServer) {
 	addTool(s, pulls.CreatePullTool, pulls.CreatePullHandleFunc)
 	addTool(s, pulls.UpdatePullTool, pulls.UpdatePullHandleFunc)
 	addTool(s, pulls.GetPullDetailTool, pulls.GetPullDetailHandleFunc)
-	addTool(s, pulls.CommentPullTool, pulls.CommentPullHandleFunc)
 	addTool(s, pulls.MergePullTool, pulls.MergePullHandleFunc)
-	addTool(s, pulls.ListPullCommentsTool, pulls.ListPullCommentsHandleFunc)
 	addTool(s, pulls.GetDiffFilesTool, pulls.GetDiffFilesHandleFunc)
-	addTool(s, pulls.ApprovePullReviewTool, pulls.ApprovePullReviewHandleFunc)
-	addTool(s, pulls.CancelPullReviewTool, pulls.CancelPullReviewHandleFunc)
+	addTool(s, pulls.ManagePullReviewTool, pulls.ManagePullReviewHandleFunc)
+
+	// Comments Tools (unified for issues and pulls)
+	addTool(s, comments.CreateCommentTool, comments.CreateCommentHandleFunc)
+	addTool(s, comments.ListCommentsTool, comments.ListCommentsHandleFunc)
 
 	// Issues Tools
 	addTool(s, issues.CreateIssueTool, issues.CreateIssueHandleFunc)
 	addTool(s, issues.UpdateIssueTool, issues.UpdateIssueHandleFunc)
 	addTool(s, issues.NewGetIssueDetailTool(issues.GetRepoIssueDetailToolName), issues.GetIssueDetailHandleFunc(issues.GetRepoIssueDetailToolName))
 	addTool(s, issues.NewListIssuesTool(issues.ListRepoIssuesToolName), issues.ListIssuesHandleFunc(issues.ListRepoIssuesToolName))
-	addTool(s, issues.CommentIssueTool, issues.CommentIssueHandleFunc)
-	addTool(s, issues.ListIssueCommentsTool, issues.ListIssueCommentsHandleFunc)
 
 	// Notifications Tools
 	addTool(s, notifications.ListUserNotificationsTool, notifications.ListUserNotificationsHandler)

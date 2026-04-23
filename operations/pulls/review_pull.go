@@ -9,52 +9,52 @@ import (
 )
 
 const (
-	ApprovePullReviewToolName = "approve_pull_review"
-	CancelPullReviewToolName  = "cancel_pull_review"
+	ManagePullReviewToolName = "manage_pull_review"
 )
 
-var ApprovePullReviewTool = func() mcp.Tool {
-	options := utils.CombineOptions(
-		BasicOptions,
-		[]mcp.ToolOption{
-			mcp.WithDescription("Approve a pull request review"),
-			mcp.WithNumber(
-				"number",
-				mcp.Description("The number of the pull request, must be an integer, not a float"),
-				mcp.Required(),
-			),
-			mcp.WithBoolean(
-				"force",
-				mcp.Description("Whether to force approve the pull request, only available for administrators"),
-				mcp.DefaultBool(false),
-			),
-		},
-	)
-	return mcp.NewTool(ApprovePullReviewToolName, options...)
-}()
+var ManagePullReviewTool = mcp.NewTool(
+	ManagePullReviewToolName,
+	mcp.WithDescription("Manage a pull request review (approve or cancel)"),
+	mcp.WithString(
+		"action",
+		mcp.Description("Action to perform: approve (submit approval) or cancel (reset review status)"),
+		mcp.Required(),
+		mcp.Enum("approve", "cancel"),
+	),
+	mcp.WithString(
+		"owner",
+		mcp.Description("The space address to which the repository belongs (enterprise, organization or personal path)"),
+		mcp.Required(),
+	),
+	mcp.WithString(
+		"repo",
+		mcp.Description("The path of the repository"),
+		mcp.Required(),
+	),
+	mcp.WithNumber(
+		"number",
+		mcp.Description("The number of the pull request, must be an integer, not a float"),
+		mcp.Required(),
+	),
+	mcp.WithBoolean(
+		"force",
+		mcp.Description("Whether to force approve (only for administrators, valid when action=approve)"),
+		mcp.DefaultBool(false),
+	),
+	mcp.WithBoolean(
+		"reset_all",
+		mcp.Description("Whether to reset all reviewers (only for administrators, valid when action=cancel)"),
+		mcp.DefaultBool(false),
+	),
+)
 
-var CancelPullReviewTool = func() mcp.Tool {
-	options := utils.CombineOptions(
-		BasicOptions,
-		[]mcp.ToolOption{
-			mcp.WithDescription("Reset the review status of a pull request"),
-			mcp.WithNumber(
-				"number",
-				mcp.Description("The number of the pull request, must be an integer, not a float"),
-				mcp.Required(),
-			),
-			mcp.WithBoolean(
-				"reset_all",
-				mcp.Description("Whether to reset all reviewers, only available for administrators"),
-				mcp.DefaultBool(false),
-			),
-		},
-	)
-	return mcp.NewTool(CancelPullReviewToolName, options...)
-}()
-
-func ApprovePullReviewHandleFunc(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func ManagePullReviewHandleFunc(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 	args, _ := utils.ConvertArgumentsToMap(request.Params.Arguments)
+
+	action, ok := args["action"].(string)
+	if !ok {
+		return mcp.NewToolResultError("missing required parameter: action"), fmt.Errorf("missing action")
+	}
 
 	if checkResult, err := utils.CheckRequired(args, "owner", "repo", "number"); err != nil {
 		return checkResult, err
@@ -68,27 +68,20 @@ func ApprovePullReviewHandleFunc(ctx context.Context, request mcp.CallToolReques
 		return mcp.NewToolResultError(err.Error()), err
 	}
 
-	apiUrl := fmt.Sprintf("/repos/%s/%s/pulls/%d/review", owner, repo, number)
-	giteeClient := utils.NewGiteeClient("POST", apiUrl, utils.WithContext(ctx), utils.WithPayload(args))
-	return giteeClient.HandleMCPResult(nil)
-}
+	var apiUrl string
+	var method string
 
-func CancelPullReviewHandleFunc(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-	args, _ := utils.ConvertArgumentsToMap(request.Params.Arguments)
-
-	if checkResult, err := utils.CheckRequired(args, "owner", "repo", "number"); err != nil {
-		return checkResult, err
+	switch action {
+	case "approve":
+		apiUrl = fmt.Sprintf("/repos/%s/%s/pulls/%d/review", owner, repo, number)
+		method = "POST"
+	case "cancel":
+		apiUrl = fmt.Sprintf("/repos/%s/%s/pulls/%d/assignees", owner, repo, number)
+		method = "PATCH"
+	default:
+		return mcp.NewToolResultError("invalid action: must be approve or cancel"), fmt.Errorf("invalid action: %s", action)
 	}
 
-	owner := args["owner"].(string)
-	repo := args["repo"].(string)
-
-	number, err := utils.SafelyConvertToInt(args["number"])
-	if err != nil {
-		return mcp.NewToolResultError(err.Error()), err
-	}
-
-	apiUrl := fmt.Sprintf("/repos/%s/%s/pulls/%d/assignees", owner, repo, number)
-	giteeClient := utils.NewGiteeClient("PATCH", apiUrl, utils.WithContext(ctx), utils.WithPayload(args))
+	giteeClient := utils.NewGiteeClient(method, apiUrl, utils.WithContext(ctx), utils.WithPayload(args))
 	return giteeClient.HandleMCPResult(nil)
 }
