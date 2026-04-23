@@ -31,12 +31,12 @@ alwaysApply: true
 
 - 查找项目下工作项：先用 list_user_repos 找到仓库，再用 list_repo_issues。
 - 筛选我负责的工作项：list_repo_issues 填写 assignee_id（数字）。
-- 更新/评论工作项：选中 Issue 后，使用 update_issue 或 comment_issue。
+- 更新/评论工作项：选中 Issue 后，使用 update_issue 或 create_comment。
 
 ### 3.3 协作与代码合并
 
 - 发起 Pull Request：list_user_repos 找到仓库，create_pull 填写分支、assignees 等。
-- 查看/评论 Pull Request：list_repo_pulls 查看，list_pull_comments 或 comment_pull 参与讨论。
+- 查看/评论 Pull Request：list_repo_pulls 查看，list_comments 或 create_comment 参与讨论。
 - 合并 Pull Request：merge_pull 工具。
 
 ### 3.4 版本发布
@@ -68,17 +68,17 @@ alwaysApply: true
 
 1. list_user_repos 查询仓库
 2. list_repo_issues 填写 assignee_id（你的ID）
-3. update_issue 或 comment_issue 处理任务
+3. update_issue 或 create_comment 处理任务
 
 ### 示例3：发起代码合并并通知评审
 
 1. list_user_repos 查询仓库
 2. create_pull 发起 PR，填写 assignees
-3. comment_pull 留言提醒评审
+3. create_comment 留言提醒评审
 
 ### 示例3：实现 Issue 并创建 Pull Request
 1. 获取 Issue 详情：get_repo_issue_detail
-2. 获取 Issue 评论：list_issue_comments
+2. 获取 Issue 评论：list_comments 填写 resource_type=issue
 3. 新建分支
 4. 实现 Issue
 5. 推送至远端 && 创建 Pull Request：create_pull
