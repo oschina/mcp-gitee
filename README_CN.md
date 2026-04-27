@@ -152,6 +152,39 @@ mcp-gitee --version
 - 如果同时指定了 `enabled-toolsets` 和 `disabled-toolsets`，则 `enabled-toolsets` 优先
 - 工具名称区分大小写
 
+### 基于 HTTP 请求头的工具过滤（Per-Request）
+
+使用远程 MCP 服务器（HTTP/SSE 传输）时，可以通过 HTTP 请求头按请求动态过滤可用工具。适用于需要精细控制工具暴露范围而无需重启服务器的场景。
+
+1. **通过请求头启用指定工具（白名单）：**
+   - 使用 `X-MCP-Enabled-Tools` 请求头
+   - 仅列出的工具会在该请求中被启用
+   - 例如：`X-MCP-Enabled-Tools: list_user_repos,get_file_content`
+
+2. **通过请求头禁用指定工具（黑名单）：**
+   - 使用 `X-MCP-Disabled-Tools` 请求头
+   - 列出的工具会在该请求中被禁用
+   - 例如：`X-MCP-Disabled-Tools: create_repo,delete_repo`
+
+**优先级规则：**
+- 若同一请求中同时包含 `X-MCP-Enabled-Tools` 和 `X-MCP-Disabled-Tools`，白名单（`X-MCP-Enabled-Tools`）优先
+- 工具名称区分大小写
+
+**Cursor/Claude 配置示例：**
+```json
+{
+  "mcpServers": {
+    "gitee": {
+      "url": "https://api.gitee.com/mcp",
+      "headers": {
+        "Authorization": "Bearer <your personal access token>",
+        "X-MCP-Enabled-Tools": "list_user_repos,get_file_content,list_repo_issues"
+      }
+    }
+  }
+}
+```
+
 ## 许可证
 
 本项目采用 MIT 许可证。有关更多详细信息，请参阅 [LICENSE](LICENSE) 文件。

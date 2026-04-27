@@ -151,6 +151,39 @@ Note:
 - If both `enabled-toolsets` and `disabled-toolsets` are specified, `enabled-toolsets` takes precedence
 - Tool names are case-sensitive
 
+### Per-Request Tool Filtering (HTTP Headers)
+
+When using the remote MCP server (HTTP/SSE transport), you can dynamically filter available tools on a per-request basis via HTTP headers. This is useful for clients that need fine-grained control over tool exposure without restarting the server.
+
+1. **Enable specified tools via header (whitelist):**
+   - Use the `X-MCP-Enabled-Tools` header
+   - Only the listed tools will be enabled for that request
+   - Example: `X-MCP-Enabled-Tools: list_user_repos,get_file_content`
+
+2. **Disable specified tools via header (blacklist):**
+   - Use the `X-MCP-Disabled-Tools` header
+   - The listed tools will be disabled for that request
+   - Example: `X-MCP-Disabled-Tools: create_repo,delete_repo`
+
+**Priority rules:**
+- If both `X-MCP-Enabled-Tools` and `X-MCP-Disabled-Tools` are present in the same request, the whitelist (`X-MCP-Enabled-Tools`) takes precedence
+- Tool names are case-sensitive
+
+**Example configuration for Cursor/Claude:**
+```json
+{
+  "mcpServers": {
+    "gitee": {
+      "url": "https://api.gitee.com/mcp",
+      "headers": {
+        "Authorization": "Bearer <your personal access token>",
+        "X-MCP-Enabled-Tools": "list_user_repos,get_file_content,list_repo_issues"
+      }
+    }
+  }
+}
+```
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
