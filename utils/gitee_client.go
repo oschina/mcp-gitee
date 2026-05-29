@@ -244,7 +244,15 @@ func (g *GiteeClient) HandleMCPResult(object any) (*mcp.CallToolResult, error) {
 			NewInternalError(errors.New(err.Error()))
 	}
 
-	if err = json.Unmarshal(body, object); err != nil {
+	return g.ProcessResponse(body, object)
+}
+
+func (g *GiteeClient) ProcessResponse(body []byte, object any) (*mcp.CallToolResult, error) {
+	if object == nil {
+		return mcp.NewToolResultText("Operation completed successfully"), nil
+	}
+
+	if err := json.Unmarshal(body, object); err != nil {
 		errorMessage := fmt.Sprintf("Failed to parse response: %v", err)
 		return mcp.NewToolResultError(errorMessage), NewInternalError(errors.New(errorMessage))
 	}
