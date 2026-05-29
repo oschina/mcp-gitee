@@ -1,14 +1,11 @@
 package repository
 
 import (
-	"bytes"
 	"context"
-	"errors"
 	"fmt"
 	"net/url"
 	"strings"
 
-	"gitee.com/oschina/mcp-gitee/operations/types"
 	"gitee.com/oschina/mcp-gitee/utils"
 	"github.com/mark3labs/mcp-go/mcp"
 )
@@ -62,38 +59,6 @@ func GetFileContentHandler(ctx context.Context, request mcp.CallToolRequest) (*m
 	apiUrl := fmt.Sprintf("/repos/%s/%s/contents/%s", owner, repo, escapedPath)
 	giteeClient := utils.NewGiteeClient("GET", apiUrl, utils.WithContext(ctx), utils.WithQuery(map[string]interface{}{"ref": ref}))
 
-	// Do the HTTP request
-	_, err := giteeClient.Do()
-	if err != nil {
-		switch {
-		case utils.IsAuthError(err):
-			return mcp.NewToolResultError("Authentication failed: Please check your Gitee access token"), err
-		case utils.IsNetworkError(err):
-			return mcp.NewToolResultError("Network error: Unable to connect to Gitee API"), err
-		case utils.IsAPIError(err):
-			giteeErr := err.(*utils.GiteeError)
-			return mcp.NewToolResultError(fmt.Sprintf("API error (%d): %s", giteeErr.Code, giteeErr.Details)), err
-		default:
-			return mcp.NewToolResultError(err.Error()), err
-		}
-	}
-
-	body, err := giteeClient.GetRespBody()
-	if err != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("Failed to read response body: %s", err.Error())),
-			utils.NewInternalError(errors.New(err.Error()))
-	}
-
-	// Detect whether the response is a JSON array (directory listing) or object (single file)
-	trimmed := bytes.TrimLeft(body, " \t\r\n")
-
-	if len(trimmed) > 0 && trimmed[0] == '[' {
-		// Response is an array (directory listing)
-		var fileContents []types.FileContent
-		return giteeClient.ProcessResponse(body, &fileContents)
-	} else {
-		// Response is an object (single file)
-		var fileContent types.FileContent
-		return giteeClient.ProcessResponse(body, &fileContent)
-	}
+	// Use the specialized handler for polymorphic file content responses
+	return giteeClient.HandleMCPResultForFileContent()
 }
