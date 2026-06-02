@@ -244,7 +244,15 @@ func (g *GiteeClient) HandleMCPResult(object any) (*mcp.CallToolResult, error) {
 			NewInternalError(errors.New(err.Error()))
 	}
 
-	if err = json.Unmarshal(body, object); err != nil {
+	return g.ProcessResponse(body, object)
+}
+
+func (g *GiteeClient) ProcessResponse(body []byte, object any) (*mcp.CallToolResult, error) {
+	if object == nil {
+		return mcp.NewToolResultText("Operation completed successfully"), nil
+	}
+
+	if err := json.Unmarshal(body, object); err != nil {
 		errorMessage := fmt.Sprintf("Failed to parse response: %v", err)
 		return mcp.NewToolResultError(errorMessage), NewInternalError(errors.New(errorMessage))
 	}
@@ -277,6 +285,57 @@ func (g *GiteeClient) HandleMCPResult(object any) (*mcp.CallToolResult, error) {
 	}
 
 	return mcp.NewToolResultText(string(result)), nil
+}
+
+// HandleMCPResultForFileContent handles polymorphic API responses for file content
+// The API returns either a single FileContent object or a []FileContent array
+func (g *GiteeClient) HandleMCPResultForFileContent() (*mcp.CallToolResult, error) {
+	// Do the HTTP request and handle errors
+	_, err := g.Do()
+	if err != nil {
+		switch {
+		case IsAuthError(err):
+			return mcp.NewToolResultError("Authentication failed: Please check your Gitee access token"), err
+		case IsNetworkError(err):
+			return mcp.NewToolResultError("Network error: Unable to connect to Gitee API"), err
+		case IsAPIError(err):
+			giteeErr := err.(*GiteeError)
+			return mcp.NewToolResultError(fmt.Sprintf("API error (%d): %s", giteeErr.Code, giteeErr.Details)), err
+		default:
+			return mcp.NewToolResultError(err.Error()), err
+		}
+	}
+
+	body, err := g.GetRespBody()
+	if err != nil {
+		return mcp.NewToolResultError(fmt.Sprintf("Failed to read response body: %s", err.Error())),
+			NewInternalError(errors.New(err.Error()))
+	}
+
+	// Use json.RawMessage to detect response type without unmarshaling into concrete type
+	var raw json.RawMessage
+	if err := json.Unmarshal(body, &raw); err != nil {
+		errorMessage := fmt.Sprintf("Failed to parse response: %v", err)
+		return mcp.NewToolResultError(errorMessage), NewInternalError(errors.New(errorMessage))
+	}
+
+	// Detect whether the response is a JSON array (directory listing) or object (single file)
+	if len(raw) == 0 {
+		// Empty response - treat as empty array
+		var fileContents []types.FileContent
+		return g.ProcessResponse(body, &fileContents)
+	}
+
+	if raw[0] == '[' {
+		// Response is an array (directory listing)
+		var fileContents []types.FileContent
+		return g.ProcessResponse(body, &fileContents)
+	} else {
+		// Response is an object (single file) or other JSON type
+		// The API should only return object for single files, but we handle other cases gracefully
+		var fileContent types.FileContent
+		return g.ProcessResponse(body, &fileContent)
+	}
 }
 
 func WithContext(ctx context.Context) Option {

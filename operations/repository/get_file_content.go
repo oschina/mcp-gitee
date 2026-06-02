@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"strings"
 
 	"gitee.com/oschina/mcp-gitee/utils"
 	"github.com/mark3labs/mcp-go/mcp"
@@ -47,8 +48,17 @@ func GetFileContentHandler(ctx context.Context, request mcp.CallToolRequest) (*m
 	if !ok {
 		ref = ""
 	}
-	apiUrl := fmt.Sprintf("/repos/%s/%s/contents/%s", owner, repo, url.QueryEscape(path))
+
+	// Encode each path segment individually to avoid encoding / to %2F
+	parts := strings.Split(path, "/")
+	for i, part := range parts {
+		parts[i] = url.PathEscape(part)
+	}
+	escapedPath := strings.Join(parts, "/")
+
+	apiUrl := fmt.Sprintf("/repos/%s/%s/contents/%s", owner, repo, escapedPath)
 	giteeClient := utils.NewGiteeClient("GET", apiUrl, utils.WithContext(ctx), utils.WithQuery(map[string]interface{}{"ref": ref}))
-	var fileContents interface{}
-	return giteeClient.HandleMCPResult(&fileContents)
+
+	// Use the specialized handler for polymorphic file content responses
+	return giteeClient.HandleMCPResultForFileContent()
 }
