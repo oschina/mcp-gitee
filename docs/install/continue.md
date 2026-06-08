@@ -1,12 +1,16 @@
-Continue hub 助手使用 config.yaml 规范定义。本地助手也可以通过放置在全局 .continue 文件夹中的 YAML 文件 config.yaml 进行配置（Mac 上为 ~/.continue，Windows 上为 %USERPROFILE%\.continue）
+# Continue
 
-配置示例：
+Add a JSON MCP config file at `.continue/mcpServers/gitee.json` in your workspace:
 
-```yml
-mcpServers:
-  - name: gitee
-    command: mcp-gitee
-    args:
-      - --token
-      - <your personal token>
+```json
+{
+  "mcpServers": {
+    "gitee": {
+      "url": "https://api.gitee.com/mcp",
+      "headers": {
+        "Authorization": "Bearer <your personal access token>"
+      }
+    }
+  }
+}
 ```

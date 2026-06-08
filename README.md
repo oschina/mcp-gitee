@@ -59,15 +59,27 @@ mcp-gitee --version
 
 ## MCP Hosts Configuration
 <div align="center">
-  <a href="docs/install/claude.md" title="Claude"><img src="docs/install/logos/Claude.png" width=80 height=80></a>
-  <a href="docs/install/cursor.md" title="Cursor"><img src="docs/install/logos/Cursor.png" width=80 height=80></a>
-  <a href="docs/install/trae.md" title="Trae"><img src="docs/install/logos/Trae.png" width=80 height=80></a>
-  <a href="docs/install/cline.md" title="Cline"><img src="docs/install/logos/Cline.png" width=80 height=80></a>
-  <a href="docs/install/windsurf.md" title="Windsurf"><img src="docs/install/logos/Windsurf.png" width=80 height=80></a>
+  <a href="docs/install/claude.md" title="Claude"><img src="docs/install/logos/Claude.png" width="80" height="80" style="width:80px;height:80px;object-fit:contain;"></a>
+  <a href="docs/install/codex.md" title="Codex"><img src="docs/install/logos/Codex.png" width="80" height="80" style="width:80px;height:80px;object-fit:contain;"></a>
+  <a href="docs/install/cursor.md" title="Cursor"><img src="docs/install/logos/Cursor.png" width="80" height="80" style="width:80px;height:80px;object-fit:contain;"></a>
+  <a href="docs/install/trae.md" title="Trae"><img src="docs/install/logos/Trae.png" width="80" height="80" style="width:80px;height:80px;object-fit:contain;"></a>
+  <a href="docs/install/cline.md" title="Cline"><img src="docs/install/logos/Cline.png" width="80" height="80" style="width:80px;height:80px;object-fit:contain;"></a>
 </div>
 
-config example: [Click to view more application configuration](./docs/install/)
-- Connect to the official remote mcp-gitee server (no installation required)
+Config examples: [Click to view more application configuration](./docs/install/)
+
+- [Claude Code](./docs/install/claude.md)
+- [Codex](./docs/install/codex.md)
+- [Cursor](./docs/install/cursor.md)
+- [Trae](./docs/install/trae.md)
+- [Cline](./docs/install/cline.md)
+- [Continue](./docs/install/continue.md)
+- [opencode](./docs/install/opencode.md)
+
+### Remote MCP Server
+
+Connect to the official remote mcp-gitee server (no installation required):
+
 ```json
 {
   "mcpServers": {
@@ -81,34 +93,26 @@ config example: [Click to view more application configuration](./docs/install/)
 }
 ```
 
-- npx
-```json
-{
-  "mcpServers": {
-    "gitee": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@gitee/mcp-gitee@latest"
-      ],
-      "env": {
-        "GITEE_API_BASE": "https://gitee.com/api/v5",
-        "GITEE_ACCESS_TOKEN": "<your personal access token>"
-      }
-    }
-  }
-}
+Codex uses `~/.codex/config.toml`:
+
+```toml
+[mcp_servers.gitee]
+url = "https://api.gitee.com/mcp"
+bearer_token_env_var = "GITEE_ACCESS_TOKEN"
 ```
-- executable
+
+opencode uses `~/.config/opencode/opencode.json`:
+
 ```json
 {
-  "mcpServers": {
+  "mcp": {
     "gitee": {
-      "command": "mcp-gitee",
-      "env": {
-        "GITEE_API_BASE": "https://gitee.com/api/v5",
-        "GITEE_ACCESS_TOKEN": "<your personal access token>"
-      }
+      "type": "remote",
+      "url": "https://api.gitee.com/mcp",
+      "headers": {
+        "Authorization": "Bearer <your personal access token>"
+      },
+      "enabled": true
     }
   }
 }

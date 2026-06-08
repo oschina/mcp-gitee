@@ -1,17 +1,17 @@
-# Cline
+# opencode
 
-Add the remote MCP server in Cline MCP settings:
+Add the remote MCP server to `~/.config/opencode/opencode.json`:
 
 ```json
 {
-  "mcpServers": {
+  "mcp": {
     "gitee": {
+      "type": "remote",
       "url": "https://api.gitee.com/mcp",
       "headers": {
         "Authorization": "Bearer <your personal access token>"
       },
-      "disabled": false,
-      "autoApprove": []
+      "enabled": true
     }
   }
 }

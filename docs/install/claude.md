@@ -1,12 +1,15 @@
-stdio mode:
+# Claude Code
+
+Add the remote MCP server to the `mcpServers` section:
+
 ```json
 {
   "mcpServers": {
     "gitee": {
-      "command": "mcp-gitee",
-      "env": {
-        "GITEE_API_BASE": "https://gitee.com/api/v5",
-        "GITEE_ACCESS_TOKEN": "<your personal access token>"
+      "type": "http",
+      "url": "https://api.gitee.com/mcp",
+      "headers": {
+        "Authorization": "Bearer <your personal access token>"
       }
     }
   }
