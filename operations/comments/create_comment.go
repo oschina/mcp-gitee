@@ -54,7 +54,10 @@ func CreateCommentHandleFunc(ctx context.Context, request mcp.CallToolRequest) (
 
 	owner := args["owner"].(string)
 	repo := args["repo"].(string)
-	number := args["number"].(string)
+	number, err := utils.SafelyGetString("number", args)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), err
+	}
 
 	var apiUrl string
 	switch resourceType {

@@ -67,10 +67,9 @@ func UpdateIssueHandleFuncCommon(updateType string) func(ctx context.Context, re
 			args, _ := utils.ConvertArgumentsToMap(request.Params.Arguments)
 			apiUrlArgs := make([]interface{}, 0, len(config.PathParams))
 			for _, param := range config.PathParams {
-				value, ok := args[param].(string)
-				if !ok {
-					errMsg := fmt.Sprintf("Missing required path parameter: %s", param)
-					return mcp.NewToolResultError(errMsg), fmt.Errorf(errMsg)
+				value, err := utils.SafelyGetString(param, args)
+				if err != nil {
+					return mcp.NewToolResultError(err.Error()), err
 				}
 				apiUrlArgs = append(apiUrlArgs, value)
 			}

@@ -61,7 +61,10 @@ func ListIssueCommentsHandleFunc(ctx context.Context, request mcp.CallToolReques
 	args, _ := utils.ConvertArgumentsToMap(request.Params.Arguments)
 	owner := args["owner"].(string)
 	repo := args["repo"].(string)
-	number := args["number"].(string)
+	number, err := utils.SafelyGetString("number", args)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), err
+	}
 
 	// Construct the API URL for listing issue comments
 	apiUrl := fmt.Sprintf("/repos/%s/%s/issues/%s/comments", owner, repo, number)
