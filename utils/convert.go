@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"reflect"
+	"strconv"
 )
 
 // SafelyConvertToInt 尝试将各种类型安全地转换为 int
@@ -42,6 +43,32 @@ func SafelyConvertToInt(value interface{}) (int, error) {
 		return 0, NewParamError("number", "must be a valid integer")
 	default:
 		return 0, NewParamError("number", fmt.Sprintf("unsupported type: %v", reflect.TypeOf(value)))
+	}
+}
+
+// SafelyGetString 从 map 中安全提取 string 类型的参数值
+// 支持 string, float64, float32, int, int32, int64 类型
+// 对于数值类型自动转换为字符串表示，避免 JSON 反序列化导致的类型断言 panic
+func SafelyGetString(key string, args map[string]interface{}) (string, error) {
+	value, exists := args[key]
+	if !exists {
+		return "", NewParamError(key, "parameter is required")
+	}
+	switch v := value.(type) {
+	case string:
+		return v, nil
+	case float64:
+		return strconv.Itoa(int(v)), nil
+	case float32:
+		return strconv.Itoa(int(v)), nil
+	case int:
+		return strconv.Itoa(v), nil
+	case int32:
+		return strconv.Itoa(int(v)), nil
+	case int64:
+		return strconv.Itoa(int(v)), nil
+	default:
+		return "", NewParamError(key, fmt.Sprintf("unsupported type: %T", value))
 	}
 }
 

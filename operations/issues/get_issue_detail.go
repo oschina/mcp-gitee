@@ -88,10 +88,9 @@ func GetIssueDetailHandleFunc(getType string) server.ToolHandlerFunc {
 		if len(config.PathParams) > 0 {
 			apiUrlArgs := make([]interface{}, len(config.PathParams))
 			for idx, param := range config.PathParams {
-				value, ok := args[param].(string)
-				if !ok {
-					errMsg := fmt.Sprintf("missing required path parameter: %s", param)
-					return mcp.NewToolResultError(errMsg), fmt.Errorf(errMsg)
+				value, err := utils.SafelyGetString(param, args)
+				if err != nil {
+					return mcp.NewToolResultError(err.Error()), err
 				}
 				apiUrlArgs[idx] = value
 			}
