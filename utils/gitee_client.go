@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"os"
@@ -43,7 +44,9 @@ func GetGiteeAccessToken() string {
 	token := os.Getenv("GITEE_ACCESS_TOKEN")
 	if token != "" {
 		SetGiteeAccessToken(token)
-		os.Unsetenv("GITEE_ACCESS_TOKEN")
+		if err := os.Unsetenv("GITEE_ACCESS_TOKEN"); err != nil {
+			log.Printf("failed to unset GITEE_ACCESS_TOKEN: %v", err)
+		}
 	}
 	return token
 }
