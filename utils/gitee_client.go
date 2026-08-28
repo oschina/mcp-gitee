@@ -40,7 +40,12 @@ func GetGiteeAccessToken() string {
 	if giteeAccessToken != "" {
 		return giteeAccessToken
 	}
-	return os.Getenv("GITEE_ACCESS_TOKEN")
+	token := os.Getenv("GITEE_ACCESS_TOKEN")
+	if token != "" {
+		SetGiteeAccessToken(token)
+		os.Unsetenv("GITEE_ACCESS_TOKEN")
+	}
+	return token
 }
 
 func GetApiBase() string {
