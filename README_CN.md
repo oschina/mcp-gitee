@@ -23,14 +23,60 @@ Gitee MCP 服务器是一个用于 Gitee 的模型上下文协议（Model Contex
 ![comment_and_close_issue](./docs/images/comment_and_close_issue.jpg)
 </details>
 
-## 安装（npx 启动可直接跳过该步骤）
+## 安装
 
-### 前提条件
+Remote MCP Server 无需安装、开箱即用；如需本地（stdio）运行，可在下方任选一种方式。
 
-- Go 1.23.0 或更高版本
-- 拥有访问令牌的 Gitee 账户，[前往获取](https://gitee.com/profile/personal_access_tokens)
+### Remote MCP Server（推荐）
 
-### 从源代码构建
+在宿主的 `mcpServers` 配置节中加入以下配置，并将 `<your personal access token>` 替换为[前往获取](https://gitee.com/profile/personal_access_tokens)的访问令牌：
+
+```json
+{
+  "mcpServers": {
+    "gitee": {
+      "url": "https://api.gitee.com/mcp",
+      "headers": {
+        "Authorization": "Bearer <your personal access token>"
+      }
+    }
+  }
+}
+```
+
+各客户端（Claude Code、Codex、Cursor、Trae、Cline、Continue、opencode）的配置文件路径与格式，见下文「MCP Hosts 配置」一节的链接文档。
+
+### 本地（stdio）运行
+
+#### 下载预编译二进制
+
+前往 [Releases](https://gitee.com/oschina/mcp-gitee/releases) 下载对应平台的安装包（linux-amd64 / linux-arm / darwin-amd64 / darwin-arm64 / windows-amd64），解压后将 `mcp-gitee` 放入 PATH（Windows 平台可执行文件为 `mcp-gitee.exe`）。
+
+#### 使用 npx
+
+无需安装，启动时自动下载对应平台的预编译二进制：
+
+```json
+{
+  "mcpServers": {
+    "gitee": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@gitee/mcp-gitee@latest"
+      ],
+      "env": {
+        "GITEE_API_BASE": "https://gitee.com/api/v5",
+        "GITEE_ACCESS_TOKEN": "<your personal access token>"
+      }
+    }
+  }
+}
+```
+
+#### 从源代码构建
+
+需要 Go 1.23.0 或更高版本。
 
 1. 克隆仓库：
    ```bash
@@ -43,19 +89,45 @@ Gitee MCP 服务器是一个用于 Gitee 的模型上下文协议（Model Contex
    make build
    ```
    将 ./bin/mcp-gitee 移动至系统环境变量
-   
-### 使用 go install 安装
-   ```bash
-   go install gitee.com/oschina/mcp-gitee@latest
-   ```
 
-## 使用方法
-
-检查 mcp-gitee 版本：
+#### 使用 go install 安装
 
 ```bash
-mcp-gitee --version
+go install gitee.com/oschina/mcp-gitee@latest
 ```
+
+#### 使用已安装的可执行文件
+
+`mcp-gitee` 已加入 PATH 后（通过 Releases、源码构建或 `go install` 安装）：
+
+```json
+{
+  "mcpServers": {
+    "gitee": {
+      "command": "mcp-gitee",
+      "env": {
+        "GITEE_API_BASE": "https://gitee.com/api/v5",
+        "GITEE_ACCESS_TOKEN": "<your personal access token>"
+      }
+    }
+  }
+}
+```
+
+> **Windows 用户注意**：可执行文件必须带 `.exe` 后缀；`command` 中的路径请直接用正斜杠 `/`（Windows 同样接受，且可避免 JSON 反斜杠转义出错）：
+>
+> ```json
+> {
+>   "mcpServers": {
+>     "gitee": {
+>       "command": "C:/Users/<you>/bin/mcp-gitee.exe",
+>       "env": {
+>         "GITEE_ACCESS_TOKEN": "<your personal access token>"
+>       }
+>     }
+>   }
+> }
+> ```
 
 ## MCP Hosts 配置
 
@@ -76,48 +148,6 @@ mcp-gitee --version
 - [Cline](./docs/install/cline.md)
 - [Continue](./docs/install/continue.md)
 - [opencode](./docs/install/opencode.md)
-
-### Remote MCP Server
-
-连接官方 remote mcp-gitee server（免安装）：
-
-```json
-{
-  "mcpServers": {
-    "gitee": {
-      "url": "https://api.gitee.com/mcp",
-      "headers": {
-        "Authorization": "Bearer <your personal access token>"
-      }
-    }
-  }
-}
-```
-
-Codex 使用 `~/.codex/config.toml`：
-
-```toml
-[mcp_servers.gitee]
-url = "https://api.gitee.com/mcp"
-bearer_token_env_var = "GITEE_ACCESS_TOKEN"
-```
-
-opencode 使用 `~/.config/opencode/opencode.json`：
-
-```json
-{
-  "mcp": {
-    "gitee": {
-      "type": "remote",
-      "url": "https://api.gitee.com/mcp",
-      "headers": {
-        "Authorization": "Bearer <your personal access token>"
-      },
-      "enabled": true
-    }
-  }
-}
-```
 
 ### 命令行选项
 

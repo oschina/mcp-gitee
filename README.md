@@ -23,14 +23,60 @@ Gitee MCP Server is a Model Context Protocol (MCP) server implementation for Git
 ![comment_and_close_issue](./docs/images/comment_and_close_issue.jpg)
 </details>
 
-## Installation(This step can be skipped directly when starting npx)
+## Installation
 
-### Prerequisites
+The Remote MCP Server requires no installation and works out of the box. To run mcp-gitee locally (stdio), pick one of the options below.
 
-- Go 1.23.0 or higher
-- Gitee account with an access token, [Go to get](https://gitee.com/profile/personal_access_tokens)
+### Remote MCP Server (Recommended)
 
-### Building from Source
+Add the following to the `mcpServers` section of your host config, replacing `<your personal access token>` with a token from [here](https://gitee.com/profile/personal_access_tokens):
+
+```json
+{
+  "mcpServers": {
+    "gitee": {
+      "url": "https://api.gitee.com/mcp",
+      "headers": {
+        "Authorization": "Bearer <your personal access token>"
+      }
+    }
+  }
+}
+```
+
+For per-client config file paths and formats (Claude Code, Codex, Cursor, Trae, Cline, Continue, opencode), follow the guides linked in the MCP Hosts Configuration section below.
+
+### Local (stdio)
+
+#### Download Pre-built Binaries
+
+Grab the archive for your platform (linux-amd64 / linux-arm / darwin-amd64 / darwin-arm64 / windows-amd64) from [Releases](https://gitee.com/oschina/mcp-gitee/releases), extract it, and put `mcp-gitee` on your PATH (on Windows the executable is `mcp-gitee.exe`).
+
+#### Use npx
+
+No installation needed; the pre-built binary for your platform is downloaded automatically at startup:
+
+```json
+{
+  "mcpServers": {
+    "gitee": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@gitee/mcp-gitee@latest"
+      ],
+      "env": {
+        "GITEE_API_BASE": "https://gitee.com/api/v5",
+        "GITEE_ACCESS_TOKEN": "<your personal access token>"
+      }
+    }
+  }
+}
+```
+
+#### Building from Source
+
+Requires Go 1.23.0 or higher.
 
 1. Clone the repository:
    ```bash
@@ -44,18 +90,44 @@ Gitee MCP Server is a Model Context Protocol (MCP) server implementation for Git
    ```
    Move ./bin/mcp-gitee PATH env
 
-### Use go install
-   ```bash
-   go install gitee.com/oschina/mcp-gitee@latest
-   ```
-
-## Usage
-
-Check mcp-gitee version:
+#### Use go install
 
 ```bash
-mcp-gitee --version
+go install gitee.com/oschina/mcp-gitee@latest
 ```
+
+#### Use the Installed Executable
+
+Once `mcp-gitee` is available on your PATH (via Releases, source build, or `go install`):
+
+```json
+{
+  "mcpServers": {
+    "gitee": {
+      "command": "mcp-gitee",
+      "env": {
+        "GITEE_API_BASE": "https://gitee.com/api/v5",
+        "GITEE_ACCESS_TOKEN": "<your personal access token>"
+      }
+    }
+  }
+}
+```
+
+> **Windows**: the executable must include the `.exe` suffix, and the path in `command` should use forward slashes `/` (Windows accepts them, and it avoids JSON backslash-escaping mistakes):
+>
+> ```json
+> {
+>   "mcpServers": {
+>     "gitee": {
+>       "command": "C:/Users/<you>/bin/mcp-gitee.exe",
+>       "env": {
+>         "GITEE_ACCESS_TOKEN": "<your personal access token>"
+>       }
+>     }
+>   }
+> }
+> ```
 
 ## MCP Hosts Configuration
 <div align="center">
@@ -75,48 +147,6 @@ Config examples: [Click to view more application configuration](./docs/install/)
 - [Cline](./docs/install/cline.md)
 - [Continue](./docs/install/continue.md)
 - [opencode](./docs/install/opencode.md)
-
-### Remote MCP Server
-
-Connect to the official remote mcp-gitee server (no installation required):
-
-```json
-{
-  "mcpServers": {
-    "gitee": {
-      "url": "https://api.gitee.com/mcp",
-      "headers": {
-        "Authorization": "Bearer <your personal access token>"
-      }
-    }
-  }
-}
-```
-
-Codex uses `~/.codex/config.toml`:
-
-```toml
-[mcp_servers.gitee]
-url = "https://api.gitee.com/mcp"
-bearer_token_env_var = "GITEE_ACCESS_TOKEN"
-```
-
-opencode uses `~/.config/opencode/opencode.json`:
-
-```json
-{
-  "mcp": {
-    "gitee": {
-      "type": "remote",
-      "url": "https://api.gitee.com/mcp",
-      "headers": {
-        "Authorization": "Bearer <your personal access token>"
-      },
-      "enabled": true
-    }
-  }
-}
-```
 
 ### Command-line Options
 
