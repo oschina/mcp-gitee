@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -14,6 +15,7 @@ import (
 	"os"
 	"runtime"
 	"strconv"
+	"time"
 
 	"gitee.com/oschina/mcp-gitee/operations/types"
 
@@ -22,6 +24,12 @@ import (
 
 const (
 	DefaultApiBase = "https://gitee.com/api/v5"
+
+	// HttpRequestTimeout bounds every outbound call to the Gitee API.
+	// Deliberately generous: get_file_content can download large files
+	// (the raw endpoint allows up to 100MB), so a short timeout would
+	// abort legitimate slow downloads.
+	HttpRequestTimeout = 120 * time.Second
 )
 
 var (
@@ -151,10 +159,18 @@ func (g *GiteeClient) SetHeaders(headers map[string]string) *GiteeClient {
 	return g
 }
 
+// closeResponse closes the response body if one was received. Safe to call
+// multiple times and when no response exists (Body.Close is idempotent).
+func (g *GiteeClient) closeResponse() {
+	if g.Response != nil && g.Response.Body != nil {
+		g.Response.Body.Close()
+	}
+}
+
 func (g *GiteeClient) Do() (*GiteeClient, error) {
 	g.Response = nil
 	_payload, _ := json.Marshal(g.Payload)
-	req, err := http.NewRequest(g.Method, g.Url, bytes.NewReader(_payload))
+	req, err := http.NewRequestWithContext(g.Ctx, g.Method, g.Url, bytes.NewReader(_payload))
 	if err != nil {
 		return nil, NewInternalError(err)
 	}
@@ -183,7 +199,7 @@ func (g *GiteeClient) Do() (*GiteeClient, error) {
 		req.Header.Set(key, value)
 	}
 
-	client := &http.Client{}
+	client := &http.Client{Timeout: HttpRequestTimeout}
 	resp, err := client.Do(req)
 	if err != nil {
 		return g, NewNetworkError(err)
@@ -193,6 +209,7 @@ func (g *GiteeClient) Do() (*GiteeClient, error) {
 
 	if !g.IsSuccess() {
 		body, _ := ioutil.ReadAll(resp.Body)
+		resp.Body.Close()
 		return g, NewAPIError(resp.StatusCode, body)
 	}
 
@@ -241,8 +258,11 @@ func (g *GiteeClient) HandleMCPResult(object any) (*mcp.CallToolResult, error) {
 			return mcp.NewToolResultError(err.Error()), err
 		}
 	}
+	defer g.closeResponse()
 
 	if object == nil {
+		// Drain the body so the keep-alive connection returns to the pool.
+		io.Copy(io.Discard, g.Response.Body)
 		return mcp.NewToolResultText("Operation completed successfully"), nil
 	}
 
@@ -313,6 +333,8 @@ func (g *GiteeClient) HandleMCPResultForFileContent() (*mcp.CallToolResult, erro
 			return mcp.NewToolResultError(err.Error()), err
 		}
 	}
+
+	defer g.closeResponse()
 
 	body, err := g.GetRespBody()
 	if err != nil {
