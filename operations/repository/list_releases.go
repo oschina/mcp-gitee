@@ -50,7 +50,9 @@ func ListReleasesHandleFunc(ctx context.Context, request mcp.CallToolRequest) (*
 
 	apiUrl := fmt.Sprintf("/repos/%s/%s/releases", owner, repo)
 
-	giteeClient := utils.NewGiteeClient("GET", apiUrl, utils.WithContext(ctx), utils.WithPayload(args))
+	// GET endpoints only parse the query string: page/per_page/direction
+	// previously went into a JSON body and were silently ignored by Gitee.
+	giteeClient := utils.NewGiteeClient("GET", apiUrl, utils.WithContext(ctx), utils.WithQuery(args))
 
 	releases := make([]types.Release, 0)
 	return giteeClient.HandleMCPResult(&releases)

@@ -46,7 +46,8 @@ func GetPullDetailHandleFunc(ctx context.Context, request mcp.CallToolRequest) (
 	}
 
 	apiUrl := fmt.Sprintf("/repos/%s/%s/pulls/%d", owner, repo, number)
-	giteeClient := utils.NewGiteeClient("GET", apiUrl, utils.WithContext(ctx), utils.WithPayload(args))
+	// All parameters are path parameters; a GET request needs no payload.
+	giteeClient := utils.NewGiteeClient("GET", apiUrl, utils.WithContext(ctx))
 	pull := &types.BasicPull{}
 	return giteeClient.HandleMCPResult(pull)
 }
